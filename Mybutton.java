@@ -10,7 +10,6 @@ public class Mybutton extends JButton {
     private final String TEXT2;
     private boolean stateis1 = true;
 
-
     Mybutton(Color color1, Color color2, String text1, String text2) {
         this.COLOR1 = color1;
         this.COLOR2 = color2;
@@ -18,16 +17,20 @@ public class Mybutton extends JButton {
         this.TEXT2 = text2;
         setBackground(COLOR1);
         setText(TEXT1);
-        setSize(20,20);
 
-        addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                toggleState1();
-            }
-        });
+        // Ensure the button is opaque and disable the default button UI
+        setOpaque(true);
+        setContentAreaFilled(true);
+        setBorderPainted(false);
 
-        }
+        // Add the ButtonListener to the button
+        addActionListener(new ButtonListener(this));
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(100, 50);  // Return the desired size for the button
+    }
 
     public void toggleState1() {
         if (stateis1) {
@@ -40,6 +43,17 @@ public class Mybutton extends JButton {
             stateis1 = true;
         }
     }
+}
 
+class ButtonListener implements ActionListener {
+    private Mybutton button;
 
+    ButtonListener(Mybutton button) {
+        this.button = button;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        button.toggleState1();
+    }
 }
