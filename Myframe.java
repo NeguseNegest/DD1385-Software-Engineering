@@ -2,13 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Myframe extends JFrame {
-    Mybutton button1 = new Mybutton(Color.red, Color.blue, "Tillstånd 1", "Tillstånd 2");
-    Mybutton button2 = new Mybutton(Color.yellow, Color.orange, "Tillstånd 3", "Tillstånd 4");
+    Mybutton button1 = new Mybutton(Color.green, Color.red, "Tillstånd 1", "Tillstånd 2");
+    Mybutton button2 = new Mybutton(Color.yellow, Color.black, "Tillstånd 3", "Tillstånd 4");
 
     Myframe() {
-        setTitle("Jonathan Tadesse");
-        setSize(500, 500);
-        setBackground(Color.red);
+        setTitle("Jonathan Tadesse 1");
+        setSize(300, 300);
+        getContentPane().setBackground(Color.blue);  // Set background color of content pane
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Set the layout manager to FlowLayout
@@ -17,7 +17,6 @@ public class Myframe extends JFrame {
         // Add the button to the frame
         add(button1);
         add(button2);
-
 
         // Set the visibility of the frame to true after all components are added
         setVisible(true);
