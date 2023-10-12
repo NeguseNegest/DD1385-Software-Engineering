@@ -11,14 +11,11 @@ public class Myframe extends JFrame {
         getContentPane().setBackground(Color.blue);  // Set background color of content pane
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Set the layout manager to FlowLayout
         setLayout(new FlowLayout());
 
-        // Add the button to the frame
         add(button1);
         add(button2);
 
-        // Set the visibility of the frame to true after all components are added
         setVisible(true);
     }
 
