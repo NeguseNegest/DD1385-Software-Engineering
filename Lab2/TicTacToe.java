@@ -1,4 +1,3 @@
-//TicTacToe logic
 public class TicTacToe implements Boardgame {
 
     private String[][] boardArray = new String[3][3];
@@ -44,21 +43,32 @@ public class TicTacToe implements Boardgame {
 
     public String getWinner(int i, int j) {
         String current_type = boardArray[i][j];
-        
         if (current_type.equals(boardArray[i][0]) && current_type.equals(boardArray[i][1]) && current_type.equals(boardArray[i][2])) {
             return current_type + " is the winner";
-
         } else if (current_type.equals(boardArray[0][j]) && current_type.equals(boardArray[1][j]) && current_type.equals(boardArray[2][j])) {
-
             return current_type + " is the winner";
-
         } else if ((current_type.equals(boardArray[0][0]) && current_type.equals(boardArray[1][1]) && current_type.equals(boardArray[2][2])) ||
                    (current_type.equals(boardArray[0][2]) && current_type.equals(boardArray[1][1]) && current_type.equals(boardArray[2][0]))) {
             return current_type + " is the winner";
         }
         return "No winner yet";
     }
-    
+
+
+    public boolean check_if_full(){
+        int count=1;
+        for(int i=0;i<4;i++){
+            for(int j=0;j<4;j++){
+                if( boardArray[i][j].equals("X") || boardArray[i][j].equals("O")){
+                    count=count+1;
+                }    
+            }
+        }
+         if (count==9){
+            return true;
+        }
+        return false;
+    }
 
     public String getStatus(int i, int j) {
         return boardArray[i][j];
