@@ -56,7 +56,7 @@ public class TicTacToe implements Boardgame {
 
 
     public boolean check_if_full(){
-        int count=1;
+        int count=0;
         for(int i=0;i<4;i++){
             for(int j=0;j<4;j++){
                 if( boardArray[i][j].equals("X") || boardArray[i][j].equals("O")){
