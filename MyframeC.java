@@ -6,7 +6,7 @@ public class Myframe extends JFrame {
     Mybutton button2 = new Mybutton(Color.yellow, Color.black, "Tillstånd 3", "Tillstånd 4");
 
     Myframe() {
-        setTitle("Jonathan Tadesse 1");
+        setTitle("Jonathan  1");
         setSize(300, 300);
         getContentPane().setBackground(Color.blue);  // Set background color of content pane
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
