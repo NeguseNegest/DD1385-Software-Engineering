@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class GameBoard {
     private final int BoardSize=20;
     private int n=BoardSize/2;
-    private final String emptySlot="●";
+    private final String food="●";
     private final String pacman="P";
     private final String interiorWall="#";
     private int Score=0;
@@ -26,7 +26,7 @@ public  void initBoard(){
     // Populate the slots
     for(int i=0; i<BoardSize; i++){
         for(int j=0; j<BoardSize; j++){
-            Board[i][j]=emptySlot;
+            Board[i][j]=food;
         }
     }
     // Pacman should be placed at the bottom or top corner at each start of the game. 
