@@ -16,6 +16,7 @@ public class GameBoard {
     private final String RIGHT="d";
     private String ghost="0";
     private boolean GameOver=false;
+    private final int speed=1;
 
 
 public  void initBoard(){
@@ -82,6 +83,7 @@ public void move(String direction){
     int [] PacPos =getPacPosition();
     int x=PacPos[0];
     int y=PacPos[1];
+    String lastDirection=direction;
     if(isValidMove(direction)){
         if(direction.equals(UP)){
             //Board[x-1][y]
@@ -110,10 +112,15 @@ public void move(String direction){
             Score+=1;
 
         }
+        
+        
+        
 
     }
     
+    
 }
+
 
 public boolean isValidMove(String direction) {
     int[] pacPos = getPacPosition();
@@ -176,3 +183,4 @@ public static void main(String[] args) {
 }
 
 }
+
