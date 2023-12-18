@@ -1,5 +1,5 @@
 
-package PacMan;
+package ProjectPacman;
 
 public class Maze {
 

@@ -1,4 +1,4 @@
-package PacMan;
+package ProjectPacman;
 
 public abstract class Entity {
 	protected int x;

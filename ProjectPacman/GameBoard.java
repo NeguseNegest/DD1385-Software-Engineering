@@ -1,4 +1,4 @@
-package PacMan;
+// package ProjectPacman;
 import java.util.Scanner;
 
 public class GameBoard {
