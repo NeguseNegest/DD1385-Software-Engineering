@@ -11,12 +11,12 @@ import java.awt.event.KeyListener;
 
 class PacmanModel{
 
-    private final int BoardSize=20;
-    private int n=BoardSize/2;
+    private final int boardSize = 20;
+    private int n = boardSize/2;
     private final String food="●";
     private final String pacman="P";
     private final String interiorWall="#";
-    private String[][] Board= new String[BoardSize][BoardSize];
+    private String[][] Board= new String[boardSize][boardSize];
     private PacPlayer pacmanEntity = new PacPlayer(); 
 
 
@@ -32,20 +32,22 @@ class PacmanModel{
             if(direction.equals("UP")){
                 Board[x][y]=" ";
                 Board[x-1][y]=pacman;
+                pacmanEntity.setX(x-1);
             }
             if(direction.equals("DOWN")){
-                //Board[x+1][y]
                 Board[x][y]=" ";
                 Board[x+1][y]=pacman;
-
+                pacmanEntity.setX(x+1);
             }
             if(direction.equals("LEFT")){
                 Board[x][y]=" ";
                 Board[x][y-1]=pacman;
+                pacmanEntity.setY(y-1);
             }
             if(direction.equals("RIGHT")){
                 Board[x][y]=" ";
                 Board[x][y+1]=pacman;
+                pacmanEntity.setY(y+1);
             }
         }
     }
@@ -70,8 +72,8 @@ class PacmanModel{
 
     public  void initBoard(){
         // Populate the board
-        for(int i=0; i<BoardSize; i++){
-            for(int j=0; j<BoardSize; j++){
+        for(int i=0; i<boardSize; i++){
+            for(int j=0; j<boardSize; j++){
                 Board[i][j]=food;
             }
         }
@@ -85,29 +87,79 @@ class PacmanModel{
         
         
         // Make Walls
-        for(int j=0; j<BoardSize; j++){
+        for(int j=0; j<boardSize; j++){
             Board[j][0]=interiorWall;
             Board[0][j]=interiorWall;
-            Board[BoardSize-1][j]=interiorWall;
-            Board[j][BoardSize-1]=interiorWall;
+            Board[boardSize-1][j]=interiorWall;
+            Board[j][boardSize-1]=interiorWall;
         }
         
         // Pacman should be placed at the bottom or top corner at each start of the game. 
-        Board[BoardSize-2][1]=pacman;
-        pacmanEntity.setX(BoardSize-2);
+        Board[boardSize-2][1]=pacman;
+        pacmanEntity.setX(boardSize-2);
         pacmanEntity.setY(1);
     }
+    public String getStatus(int i, int j){
+        String result = Board[i][j];
+        return result;
+    }
 
+    public int getboardSize(){
+        return boardSize;
+    }
 }
 
-class PacmanView{
+class PacmanView extends JPanel{
     private PacmanModel model;
     public PacmanView(PacmanModel model){
         this.model = model;
     }
 
-    public void update(){}
+    public void displayInTerminal(){
+        int boardSize = model.getboardSize();
+        for(int i=0; i<boardSize; i++){
+            for(int j=0; j<boardSize; j++)
+                System.out.print("  " + model.getStatus(i,j));
+            System.out.println();
+        }
+    }
+    
+    public void show(){
+        JFrame frame = new JFrame("Game");
+        frame.setSize(500,500);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setFocusable(true);
+        frame.add(this);
+        frame.setVisible(true);
+    }
 
+    @Override
+    protected void paintComponent(Graphics g){
+        super.paintComponent(g);
+        int cellSize = 20;
+        int boardSize = model.getboardSize();
+        for (int i= 0; i<boardSize; i++){
+            for (int j=0; j<boardSize; j++){
+                String status = model.getStatus(i, j);
+                if (status.equals("P")){
+                    g.setColor(Color.YELLOW);
+                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                    // g.fillArc(j * cellSize, i * cellSize, cellSize, cellSize, 45, 270);
+                } else if (status.equals("#")){
+                    g.setColor(Color.BLACK);
+                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                } else{
+                    g.setColor(Color.BLUE);
+                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                }
+            }
+        }
+    }
+
+    public void update(){
+        displayInTerminal();
+        System.out.flush();
+    }
 }
 
 class PacmanController implements KeyListener, ActionListener{
@@ -120,7 +172,7 @@ class PacmanController implements KeyListener, ActionListener{
         this.model = model;
         this.view = view;
         direction = 0;
-        timer = new Timer(16, this);
+        timer = new Timer(80, this);
         timer.start();
     }
 
@@ -156,8 +208,10 @@ class PacmanController implements KeyListener, ActionListener{
             } else if (direction==4){
                 model.move("DOWN");
             }
-            view.update(); // Updates the view 
         }
+        // view.update(); // Updates the view 
+        view.repaint();
+        // view.update();
     }
     
 }
@@ -166,6 +220,11 @@ class PacmanController implements KeyListener, ActionListener{
 
 public class PacmanGame {
     public static void main(String[] args) {
+        PacmanModel model = new PacmanModel();
+        PacmanView view = new PacmanView(model);
+        PacmanController controller = new PacmanController(model, view);
+        view.addKeyListener(controller);
+        view.show();
 
     }
 }
