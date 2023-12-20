@@ -54,7 +54,6 @@ public class PacmanController implements KeyListener, ActionListener{
                 model.move("DOWN");
             }
         }
-        // view.update(); // Updates the view 
         view.repaint();
         view.update();
     }
