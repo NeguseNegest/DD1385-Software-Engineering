@@ -12,6 +12,7 @@ public class PacmanModel{
     
     public PacmanModel() {
         this.initBoard();
+        pacmanEntity.setLives(3);
     }
     
     public void move(String direction){

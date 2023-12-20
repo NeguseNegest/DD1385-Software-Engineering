@@ -38,15 +38,14 @@ public class PacmanView extends JPanel{
                 String status = model.getStatus(i, j);
                 if (status.equals("P")){
                     g.setColor(Color.YELLOW);
-                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                     // g.fillArc(j * cellSize, i * cellSize, cellSize, cellSize, 45, 270);
                 } else if (status.equals("#")){
                     g.setColor(Color.BLACK);
-                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 } else{
                     g.setColor(Color.BLUE);
-                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                    
                 }
+                g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
             }
         }
     }

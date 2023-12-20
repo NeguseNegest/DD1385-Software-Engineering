@@ -5,6 +5,12 @@ public abstract class Entity {
 	protected int y;
 	protected int state = 1;
 
+
+	public int[] getPosition(){
+        int[] result = {getX(),getY()};
+        return result;
+    }
+	
 	public void setX(int x) {
 		this.x = x;
 	}
