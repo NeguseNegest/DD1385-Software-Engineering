@@ -41,7 +41,7 @@ public class PacmanController implements KeyListener, ActionListener{
     }
 
 
-    @Override
+    @Override // Will not be called unless added as an argument to a keyListener
     public void actionPerformed(ActionEvent e) {
         if (direction != 0){
             if (direction == 1) {
@@ -54,6 +54,7 @@ public class PacmanController implements KeyListener, ActionListener{
                 model.move("DOWN");
             }
         }
+        // view.update(); // Updates the view 
         view.repaint();
         view.update();
     }

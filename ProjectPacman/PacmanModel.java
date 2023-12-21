@@ -1,13 +1,15 @@
 package ProjectPacman;
 
-public class PacmanModel{
+public class PacmanModel implements ObserverOfPlayer{
 
-    private final int boardSize = 20;
-    private int n = boardSize/2;
-    private final String food="●";
-    private final String pacman="P";
     private final String interiorWall="#";
-    private String[][] Board= new String[boardSize][boardSize];
+    private final String food="-";
+    private final String door = "d";
+    private final String powerUp = "R";
+    private final String pacman="P";
+    private String[][] board;
+    private int boardWidth; // Array length
+    private int boardHeight; // Number of arrays
     private PacPlayer pacmanEntity = new PacPlayer(); 
     
     public PacmanModel() {
@@ -18,83 +20,126 @@ public class PacmanModel{
     public void move(String direction){
         int x = pacmanEntity.getX();
         int y = pacmanEntity.getY();
-        if(isValidMove(direction)){
+        if(!wallCollision(direction)){
             if(direction.equals("UP")){
-                Board[x][y]=" ";
-                Board[x-1][y]=pacman;
+                board[x][y]=".";
+                board[x-1][y]=pacman;
                 pacmanEntity.setX(x-1);
             }
             if(direction.equals("DOWN")){
-                Board[x][y]=" ";
-                Board[x+1][y]=pacman;
+                board[x][y]=".";
+                board[x+1][y]=pacman;
                 pacmanEntity.setX(x+1);
             }
             if(direction.equals("LEFT")){
-                Board[x][y]=" ";
-                Board[x][y-1]=pacman;
+
+                // if (board[x][y-1].equals(".") && y-1==0){
+                //     board[x][y]=".";
+                //     board[x][getBoardWidth()-1] = pacman;
+                //     pacmanEntity.setY(0);
+                // }
+                board[x][y]=".";
+                board[x][y-1]=pacman;
                 pacmanEntity.setY(y-1);
             }
             if(direction.equals("RIGHT")){
-                Board[x][y]=" ";
-                Board[x][y+1]=pacman;
-                pacmanEntity.setY(y+1);
+                if (board[x][y+1].equals(".") && y+1==getBoardWidth()-1){
+                    board[x][y]=".";
+                    board[x][0] = pacman;
+                    pacmanEntity.setY(0);
+                } else{
+                    board[x][y]=".";
+                    board[x][y+1]=pacman;
+                    pacmanEntity.setY(y+1);
+                }
+
             }
         }
     }
 
-    public boolean isValidMove(String direction) {
+    public boolean wallCollision(String direction) {
         int x = pacmanEntity.getX();
         int y = pacmanEntity.getY();
 
         // check if the next move is valid based on the direction input
-        if (direction.equals("UP") && !Board[x - 1][y].equals(interiorWall)) {
-            return true;
-        } else if (direction.equals("DOWN") && !Board[x + 1][y].equals(interiorWall)) {
-            return true;
-        } else if (direction.equals("LEFT") && !Board[x][y - 1].equals(interiorWall)) {
-            return true;
-        } else if (direction.equals("RIGHT") && !Board[x][y + 1].equals(interiorWall)) {
-            return true;
+        if (direction.equals("UP") && !board[x - 1][y].equals(interiorWall) && !board[x - 1][y].equals(door)) {
+            return false;
+        } else if (direction.equals("DOWN") && !board[x + 1][y].equals(interiorWall) && !board[x + 1][y].equals(door)) {
+            return false;
+        } else if (direction.equals("LEFT") && !board[x][y - 1].equals(interiorWall) && !board[x][y -1].equals(door) ) {
+            return false;
+        } else if (direction.equals("RIGHT") && !board[x][y + 1].equals(interiorWall) && !board[x][y+1].equals(door)) {
+            return false;
         }
-        return false;
+        return true;
     }
 
 
     public  void initBoard(){
-        // Populate the board
-        for(int i=0; i<boardSize; i++){
-            for(int j=0; j<boardSize; j++){
-                Board[i][j]=food;
-            }
-        }
+        board = new String[][] {
+        // "#" = wall, "-" = Pellet, "." = empty, "d" = door， "R" ＝ Power up
+        {"#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#"},
+        {"#","-","-","-","-","-","-","-","-","-","-","-","-","#","#","-","-","-","-","-","-","-","-","-","-","-","-","#"},
+        {"#","-","#","#","#","#","-","#","#","#","#","#","-","#","#","-","#","#","#","#","#","-","#","#","#","#","-","#"},
+        {"#","R","#","#","#","#","-","#","#","#","#","#","-","#","#","-","#","#","#","#","#","-","#","#","#","#","R","#"},
+        {"#","-","#","#","#","#","-","#","#","#","#","#","-","#","#","-","#","#","#","#","#","-","#","#","#","#","-","#"},
+        {"#","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","#"},
+        {"#","-","#","#","#","#","-","#","#","-","#","#","#","#","#","#","#","#","-","#","#","-","#","#","#","#","-","#"},
+        {"#","-","#","#","#","#","-","#","#","-","#","#","#","#","#","#","#","#","-","#","#","-","#","#","#","#","-","#"},
+        {"#","-","-","-","-","-","-","#","#","-","-","-","-","#","#","-","-","-","-","#","#","-","-","-","-","-","-","#"},
+        {"#","#","#","#","#","#","-","#","#","#","#","#",".","#","#",".","#","#","#","#","#","-","#","#","#","#","#","#"},
+        {"#","#","#","#","#","#","-","#","#","#","#","#",".","#","#",".","#","#","#","#","#","-","#","#","#","#","#","#"},
+        {"#","#","#","#","#","#","-","#","#",".",".",".",".",".",".",".",".",".",".","#","#","-","#","#","#","#","#","#"},
+        {"#","#","#","#","#","#","-","#","#",".","#","#","#","d","d","#","#","#",".","#","#","-","#","#","#","#","#","#"},
+        {"#","#","#","#","#","#","-","#","#",".","#",".",".",".",".",".",".","#",".","#","#","-","#","#","#","#","#","#"},
+        {".",".",".",".",".",".","-",".",".",".","#",".",".",".",".",".",".","#",".",".",".","-",".",".",".",".",".","."},
+        {"#","#","#","#","#","#","-","#","#",".","#",".",".",".",".",".",".","#",".","#","#","-","#","#","#","#","#","#"},
+        {"#","#","#","#","#","#","-","#","#",".","#","#","#","#","#","#","#","#",".","#","#","-","#","#","#","#","#","#"},
+        {"#","#","#","#","#","#","-","#","#",".",".",".",".",".",".",".",".",".",".","#","#","-","#","#","#","#","#","#"},
+        {"#","#","#","#","#","#","-","#","#",".","#","#","#","#","#","#","#","#",".","#","#","-","#","#","#","#","#","#"},
+        {"#","#","#","#","#","#","-","#","#",".","#","#","#","#","#","#","#","#",".","#","#","-","#","#","#","#","#","#"},
+        {"#","-","-","-","-","-","-","-","-","-","-","-","-","#","#","-","-","-","-","-","-","-","-","-","-","-","-","#"},
+        {"#","-","#","#","#","#","-","#","#","#","#","#","-","#","#","-","#","#","#","#","#","-","#","#","#","#","-","#"},
+        {"#","-","#","#","#","#","-","#","#","#","#","#","-","#","#","-","#","#","#","#","#","-","#","#","#","#","-","#"},
+        {"#","R","-","-","#","#","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","#","#","-","-","R","#"},
+        {"#","#","#","-","#","#","-","#","#","-","#","#","#","#","#","#","#","#","-","#","#","-","#","#","-","#","#","#"},
+        {"#","#","#","-","#","#","-","#","#","-","#","#","#","#","#","#","#","#","-","#","#","-","#","#","-","#","#","#"},
+        {"#","-","-","-","-","-","-","#","#","-","-","-","-","#","#","-","-","-","-","#","#","-","-","-","-","-","-","#"},
+        {"#","-","#","#","#","#","#","#","#","#","#","#","-","#","#","-","#","#","#","#","#","#","#","#","#","#","-","#"},
+        {"#","-","#","#","#","#","#","#","#","#","#","#","-","#","#","-","#","#","#","#","#","#","#","#","#","#","-","#"},
+        {"#","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","#"},
+        {"#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#"}};
         
-        // Ghost spawning area
-        for (int i = 0; i < 5; i++) {
-            Board[n - 2 + i][n - 2] = interiorWall;
-            Board[n - 2 + i][n + 2] = interiorWall;
-            Board[n + 2][n - 2 + i] = interiorWall;
-        }
-        
-        
-        // Make Walls
-        for(int j=0; j<boardSize; j++){
-            Board[j][0]=interiorWall;
-            Board[0][j]=interiorWall;
-            Board[boardSize-1][j]=interiorWall;
-            Board[j][boardSize-1]=interiorWall;
-        }
-        
+        boardWidth = board[0].length;
+        boardHeight = board.length;
         // Pacman should be placed at the bottom or top corner at each start of the game. 
-        Board[boardSize-2][1]=pacman;
-        pacmanEntity.setX(boardSize-2);
+        board[boardWidth-2][1]=pacman;
+        pacmanEntity.setX(boardWidth-2);
         pacmanEntity.setY(1);
     }
     public String getStatus(int i, int j){
-        String result = Board[i][j];
+        String result = board[i][j];
         return result;
     }
 
-    public int getboardSize(){
-        return boardSize;
+    public int getBoardWidth(){
+        return boardWidth;
     }
+    
+    public int getBoardHeight(){
+        return boardHeight;
+    }
+
+    @Override
+    public void playerPositionChanged(){}
 }
+
+
+// Idea for wormholes
+// if (pacmanEntity.getY()==17 && pacmanEntity.getX()==10){
+//     pacmanEntity.setY(2);
+//     Board[x][y]=" ";
+//     Board[x][2]=pacman;
+// }
+// else{
+// }

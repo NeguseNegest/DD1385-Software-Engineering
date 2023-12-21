@@ -11,9 +11,10 @@ public class PacmanView extends JPanel{
     }
 
     public void displayInTerminal(){
-        int boardSize = model.getboardSize();
-        for(int i=0; i<boardSize; i++){
-            for(int j=0; j<boardSize; j++)
+        int boardWidth = model.getBoardWidth();
+        int boardHeight = model.getBoardHeight();
+        for(int i=0; i<boardHeight; i++){
+            for(int j=0; j<boardWidth; j++)
                 System.out.print("  " + model.getStatus(i,j));
             System.out.println();
         }
@@ -21,7 +22,7 @@ public class PacmanView extends JPanel{
     
     public void show(){
         JFrame frame = new JFrame("Game");
-        frame.setSize(500,500);
+        frame.setSize(570,650);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setFocusable(true);
         frame.add(this);
@@ -32,20 +33,30 @@ public class PacmanView extends JPanel{
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
         int cellSize = 20;
-        int boardSize = model.getboardSize();
-        for (int i= 0; i<boardSize; i++){
-            for (int j=0; j<boardSize; j++){
+        int boardWidth = model.getBoardWidth();
+        int boardHeight = model.getBoardHeight();
+        for (int i= 0; i<boardHeight; i++){
+            for (int j=0; j<boardWidth; j++){
                 String status = model.getStatus(i, j);
                 if (status.equals("P")){
                     g.setColor(Color.YELLOW);
-                    // g.fillArc(j * cellSize, i * cellSize, cellSize, cellSize, 45, 270);
+                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 } else if (status.equals("#")){
                     g.setColor(Color.BLACK);
-                } else{
+                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                } else if (status.equals("-")){
                     g.setColor(Color.BLUE);
-                    
+                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                } else if (status.equals("d")){
+                    g.setColor(new Color(139, 69, 19));
+                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                } else if (status.equals("R")){
+                    g.setColor(Color.RED);
+                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                } else if (status.equals(".")){
+                    g.setColor(Color.WHITE);
+                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 }
-                g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
             }
         }
     }
