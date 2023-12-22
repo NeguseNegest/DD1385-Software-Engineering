@@ -5,15 +5,18 @@ import java.util.List;
 
 public class PacPlayer extends Entity{
     private int score;
+    private int direction;
     private int lives=3;
+    private List<ObserverOfPlayer> observers = new ArrayList<ObserverOfPlayer>();
     
     public PacPlayer(){
         super();
     }
-    private List<Ghost> observers = new ArrayList<Ghost>();
+
+    
     public void notifyPosition(){
-        for (Ghost ghost : observers) {
-            ghost.positionChanged();
+        for (ObserverOfPlayer observer : observers) {
+            observer.playerPositionChanged();
         }
     }
     
@@ -47,6 +50,12 @@ public class PacPlayer extends Entity{
         return this.lives;
     }
 
+    public void setDirection(int direction){
+        this.direction = direction;
+    }
+    public int getDirection(){
+        return direction;
+    }
 
 
 }

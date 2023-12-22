@@ -3,7 +3,6 @@ package ProjectPacman;
 public abstract class Entity {
 	protected int x;
 	protected int y;
-	protected int state = 1;
 
 
 	public int[] getPosition(){
@@ -24,12 +23,6 @@ public abstract class Entity {
 	public int getY() {
 		return y;
 	}
-	
-	public void setState(int state){
-		this.state = state;
-	}
 
-	public int getState(){
-		return state;
-	}	
+	
 }

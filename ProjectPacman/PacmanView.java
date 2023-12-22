@@ -1,11 +1,13 @@
 package ProjectPacman;
 
 import javax.swing.*;
-import java.awt.*;
 
+import java.awt.*;
 
 public class PacmanView extends JPanel{
     private PacmanModel model;
+    public JButton resetButton= new JButton("Reset");
+
     public PacmanView(PacmanModel model){
         this.model = model;
     }
@@ -20,11 +22,15 @@ public class PacmanView extends JPanel{
         }
     }
     
-    public void show(){
+    public void initGUI(){
         JFrame frame = new JFrame("Game");
         frame.setSize(570,650);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setFocusable(true);
+        
+        setLayout(new BorderLayout());
+        add(resetButton, BorderLayout.NORTH);
+        
         frame.add(this);
         frame.setVisible(true);
     }
@@ -39,7 +45,7 @@ public class PacmanView extends JPanel{
             for (int j=0; j<boardWidth; j++){
                 String status = model.getStatus(i, j);
                 if (status.equals("P")){
-                    g.setColor(Color.YELLOW);
+                    g.setColor(Color.ORANGE);
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 } else if (status.equals("#")){
                     g.setColor(Color.BLACK);
@@ -64,6 +70,7 @@ public class PacmanView extends JPanel{
     public void update(){
         displayInTerminal();
         System.out.flush();
+        this.repaint();
     }
 }
 
