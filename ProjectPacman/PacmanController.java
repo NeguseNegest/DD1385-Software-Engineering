@@ -23,7 +23,8 @@ public class PacmanController implements GameLoopListener{
         this.view.resetButton.addActionListener(resetButtonPressed);
         this.view.addKeyListener(arrowKeyPressed); // You need a frame listen to Keys
         timer = new Timer(80, gameLoop);
-        timer.start();
+        this.view.startButton.addActionListener(startButtonPressed);
+        // timer.start();
     }
     
 
@@ -31,6 +32,14 @@ public class PacmanController implements GameLoopListener{
         @Override
         public void actionPerformed(ActionEvent e) {
             onGameTick();
+        };
+    };
+
+    final private ActionListener startButtonPressed = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            timer.start();
+            view.requestFocusInWindow();
         };
     };
 

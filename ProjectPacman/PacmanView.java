@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 public class PacmanView extends JPanel{
     private PacmanModel model;
     private JLabel message = new JLabel("");
+    public JButton startButton = new JButton("Start");
     public JButton resetButton= new JButton("Reset");
     private Timer messageTimer;
     public PacmanView(PacmanModel model){
@@ -91,6 +92,7 @@ public class PacmanView extends JPanel{
         resetButton.setPreferredSize(new Dimension(80, 30));
         buttonPanel.add(resetButton);
         buttonPanel.add(Box.createVerticalStrut(10));    
+        buttonPanel.add(startButton);
         buttonPanel.add(message);
     
         add(buttonPanel, BorderLayout.EAST);
