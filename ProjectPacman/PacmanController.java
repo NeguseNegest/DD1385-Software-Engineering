@@ -20,13 +20,20 @@ public class PacmanController implements GameLoopListener{
         this.model = model;
         this.view = view;
         this.pacmanEntity = pacmanEntity;
-        pacmanEntity.setDirection(0);
         this.view.resetButton.addActionListener(resetButtonPressed);
         this.view.addKeyListener(arrowKeyPressed); // You need a frame listen to Keys
-        timer = new Timer(80, new GameTimer(this));
+        timer = new Timer(80, gameLoop);
         timer.start();
     }
     
+
+    final private ActionListener gameLoop = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            onGameTick();
+        };
+    };
+
     final private ActionListener resetButtonPressed = new ActionListener(){
         @Override
         public void actionPerformed(ActionEvent e){
@@ -59,7 +66,6 @@ public class PacmanController implements GameLoopListener{
         }
     }; 
 
-
     @Override
     public void onGameTick() {
         if (!model.checkLossCondition()) { 
@@ -75,24 +81,24 @@ public class PacmanController implements GameLoopListener{
         }
     }
 
-    // Handle the game win event
-    @Override
-    public void onGameWin() {
-        timer.stop();
-    }
-
-    // Handle the game reset event
     @Override
     public void onGameReset() {
         model.resetGame();
         timer.restart();
         view.requestFocusInWindow();
+        view.displayMessage("Game was reset");
+    }
+    
+    @Override
+    public void onGameWin() {
+        timer.stop();
+        view.displayMessage("You won");
     }
 
-    // Handle the game loss event
     @Override
     public void onGameLoss() {
         timer.stop();
+        view.displayMessage("You lost");
     }
 
 }

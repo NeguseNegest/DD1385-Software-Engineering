@@ -98,8 +98,6 @@ public class PacmanModel {
         pacmanEntity.setY(newY);
     }
 
-
-    // Gets the direction attribute of pacman to decide how to move
     public void movePacman(){
         int direction = pacmanEntity.getDirection(); 
         if (direction != 0){

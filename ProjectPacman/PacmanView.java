@@ -1,38 +1,25 @@
 package ProjectPacman;
 
 import javax.swing.*;
-
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class PacmanView extends JPanel{
     private PacmanModel model;
+    private JLabel message = new JLabel("");
     public JButton resetButton= new JButton("Reset");
-
+    private Timer messageTimer;
     public PacmanView(PacmanModel model){
         this.model = model;
-    }
-
-    public void displayInTerminal(){
-        int boardWidth = model.getBoardWidth();
-        int boardHeight = model.getBoardHeight();
-        for(int i=0; i<boardHeight; i++){
-            for(int j=0; j<boardWidth; j++)
-                System.out.print("  " + model.getStatus(i,j));
-            System.out.println();
-        }
-    }
-    
-    public void initGUI(){
-        JFrame frame = new JFrame("Game");
-        frame.setSize(570,650);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setFocusable(true);
         
-        setLayout(new BorderLayout());
-        add(resetButton, BorderLayout.NORTH);
-        
-        frame.add(this);
-        frame.setVisible(true);
+        messageTimer = new Timer(500, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clearMessage();
+            }
+        });
+        messageTimer.setRepeats(false); // Make sure the timer only fires once
     }
 
     @Override
@@ -67,10 +54,49 @@ public class PacmanView extends JPanel{
         }
     }
 
+    public void displayMessage(String text){
+        message.setText(text);
+        messageTimer.start();
+    }
+    public void clearMessage(){
+        message.setText("");
+        messageTimer.stop();
+    }
+
     public void update(){
         displayInTerminal();
         System.out.flush();
         this.repaint();
+    }
+
+    public void displayInTerminal(){
+        int boardWidth = model.getBoardWidth();
+        int boardHeight = model.getBoardHeight();
+        for(int i=0; i<boardHeight; i++){
+            for(int j=0; j<boardWidth; j++)
+                System.out.print("  " + model.getStatus(i,j));
+            System.out.println();
+        }
+    }
+    public void initGUI() {
+        JFrame frame = new JFrame("Game");
+        frame.setSize(670, 650);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setFocusable(true);
+    
+        setLayout(new BorderLayout());
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS)); // Use Y_AXIS for vertical alignment
+    
+        resetButton.setPreferredSize(new Dimension(80, 30));
+        buttonPanel.add(resetButton);
+        buttonPanel.add(Box.createVerticalStrut(10));    
+        buttonPanel.add(message);
+    
+        add(buttonPanel, BorderLayout.EAST);
+    
+        frame.add(this);
+        frame.setVisible(true);
     }
 }
 
