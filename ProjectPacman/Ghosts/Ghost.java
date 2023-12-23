@@ -90,36 +90,39 @@ public class Ghost extends Entity implements ObserverOfPlayer{
         String[][] board = model.getBoard();
         boolean[][] visitedMap = new boolean[boardHeight][boardWidth];
 
-        Queue<Node> nodes = new ArrayDeque<>();
+        LinkedList<Node> nodes = new LinkedList<>();
         nodes.add(new Node(x, y));
 
         int currentX, currentY;
 
         while (!nodes.isEmpty()) {
-            Node currentNode = nodes.poll();
+            Node currentNode = nodes.pop();
             currentX = currentNode.x;
             currentY = currentNode.y;
-
             if (currentX == pacmanX && currentY == pacmanY) {
                 break; // Reached the target
             }
-
+            
+            
             if (!visitedMap[currentX][currentY]) {
                 visitedMap[currentX][currentY] = true;
 
-                if (board[currentX][currentY + 1] != "#") {
-                    nodes.add(new Node(currentX, currentY + 1, currentNode));
-                } else if (board[currentX - 1][currentY] != "#") {
-                    nodes.add(new Node(currentX - 1, currentY, currentNode));
-                } else if (board[currentX][currentY - 1] != "#") {
-                    nodes.add(new Node(currentX, currentY - 1, currentNode));
-                } else if (board[currentX + 1][currentY] != "#") {
-                    nodes.add(new Node(currentX + 1, currentY, currentNode));
+                if (board[currentX][currentY + 1] != "#" && currentY+1 != 28) {
+                    nodes.add(0, new Node(currentX, currentY + 1, currentNode));
+                } 
+                if (board[currentX - 1][currentY] != "#") {
+                    nodes.add(0, new Node(currentX - 1, currentY, currentNode));
+                } 
+                if (board[currentX][currentY - 1] != "#" && currentY-1!=0) {
+                    nodes.add(0, new Node(currentX, currentY - 1, currentNode));
+                }
+                if (board[currentX + 1][currentY] != "#") {
+                    nodes.add(0, new Node(currentX + 1, currentY, currentNode));
                 }
             }
         }
 
-        Node findingNode = nodes.poll();
+        Node findingNode = nodes.pop();
         while (findingNode != null) {
             int[] nextCoordinate = new int[]{findingNode.x, findingNode.y};
             pathRoute.add(0, nextCoordinate);
