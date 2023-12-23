@@ -2,21 +2,32 @@ package ProjectPacman;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class PacPlayer extends Entity{
     private int score;
     private int direction;
     private int lives=3;
     private List<ObserverOfPlayer> observers = new ArrayList<ObserverOfPlayer>();
-    
+    private Timer notificationCoolDown; 
     public PacPlayer(){
         super();
+        notificationCoolDown = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                notificationCoolDown.stop();
+            }
+        });
     }
 
     public void addObserver(ObserverOfPlayer observer){
         this.observers.add(observer);
     }
     public void notifyPosition(){
+        notificationCoolDown.start();
         for (ObserverOfPlayer observer : observers) {
             observer.playerPositionChanged(x,y);
         }

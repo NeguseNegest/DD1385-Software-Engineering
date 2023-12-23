@@ -100,6 +100,12 @@ public class Ghost extends Entity implements ObserverOfPlayer{
             currentX = currentNode.x;
             currentY = currentNode.y;
             if (currentX == pacmanX && currentY == pacmanY) {
+                Node endNode = currentNode;
+                while (endNode != null) {
+                    int[] nextCoordinate = new int[]{endNode.x, endNode.y};
+                    pathRoute.add(0, nextCoordinate);
+                    endNode = endNode.parent;
+                }
                 break; // Reached the target
             }
             
@@ -122,12 +128,12 @@ public class Ghost extends Entity implements ObserverOfPlayer{
             }
         }
 
-        Node findingNode = nodes.pop();
-        while (findingNode != null) {
-            int[] nextCoordinate = new int[]{findingNode.x, findingNode.y};
-            pathRoute.add(0, nextCoordinate);
-            findingNode = findingNode.parent;
-        }
+        // Node findingNode = nodes.pop();
+        // while (findingNode != null) {
+        //     int[] nextCoordinate = new int[]{findingNode.x, findingNode.y};
+        //     pathRoute.add(0, nextCoordinate);
+        //     findingNode = findingNode.parent;
+        // }
         pathRoute.add(0, new int[]{x, y});
     }
 
