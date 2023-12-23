@@ -85,11 +85,13 @@ public class PacmanModel implements ObserverOfPlayer {
 
         if(board[x][y]=="R"){
             pacmanEntity.setScore(5);
+            pacmanEntity.playerPoweredUp();
         }
         
         board[newX][newY] = pacman; // Move to the new position
         pacmanEntity.setX(newX);
         pacmanEntity.setY(newY);
+        pacmanEntity.playerPositionChanged(x,y);
     }
 
     public boolean wallCollision(String direction) {
@@ -185,9 +187,18 @@ public class PacmanModel implements ObserverOfPlayer {
         {"#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#"}};
     
         // Pacman should be placed at the bottom or top corner at each start of the game. 
+        boardWidth = board[0].length;
+        boardHeight = board.length;
+        // Pacman should be placed at the bottom or top corner at each start of the game. 
         board[boardWidth-2][1]=pacman;
         pacmanEntity.setX(boardWidth-2);
         pacmanEntity.setY(1);
     }
+
+@Override
+public void playerPoweredUp() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'playerPoweredUp'");
+}
     
     }

@@ -13,7 +13,7 @@ public class PacPlayer extends Entity{
     private List<Ghost> observers = new ArrayList<Ghost>();
     public void notifyPosition(){
         for (Ghost ghost : observers) {
-            ghost.positionChanged();
+            positionChanged();
         }
     }
     
@@ -47,6 +47,7 @@ public class PacPlayer extends Entity{
         return this.lives;
     }
 
+    public void positionChanged(){}
 
 
 }

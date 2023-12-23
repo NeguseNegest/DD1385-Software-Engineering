@@ -5,13 +5,15 @@ import java.awt.*;
 
 public class PacmanView extends JPanel{
     private PacmanModel model;
+    private PacPlayer pacmanEntity = new PacPlayer();
     public JButton resetButton= new JButton("Reset");
     public JButton scoreDisplay=new JButton("Score");
+    
 
     public PacmanView(PacmanModel model){
         this.model = model;
     }
-
+    
     public void displayInTerminal(){
         int boardWidth = model.getBoardWidth();
         int boardHeight = model.getBoardHeight();

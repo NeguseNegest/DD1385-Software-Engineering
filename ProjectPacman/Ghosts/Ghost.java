@@ -1,4 +1,7 @@
-package ProjectPacman;
+package ProjectPacman.Ghosts;
+
+import ProjectPacman.Entity;
+import ProjectPacman.ObserverOfPlayer;
 
 
 public class Ghost extends Entity implements ObserverOfPlayer{
@@ -18,17 +21,26 @@ public class Ghost extends Entity implements ObserverOfPlayer{
     }
 
     public boolean Eaten(){
+        return true;
                 
     }
 
 
+
     @Override
-    public void playerPositionChanged(){
-        //Sees where pacman is atm
+    public void playerPositionChanged(int x,int y){
+        // pathfinder.updatePath();
+        // newDirection = pathfinder.getNextMove();
+        // setDirection(newDirection);
     }
 
 
-
+    public void setDirection(int direction){
+        this.direction = direction;
+    }
+    public int getDirection(){
+        return direction;
+    }
 
     public void PanicState(){
     }
