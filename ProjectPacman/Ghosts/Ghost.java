@@ -1,8 +1,11 @@
 package ProjectPacman.Ghosts;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+
 import ProjectPacman.Entity;
 import ProjectPacman.ObserverOfPlayer;
 import ProjectPacman.PacmanModel;
@@ -12,10 +15,9 @@ public class Ghost extends Entity implements ObserverOfPlayer{
     private final int cX=13;
     private final int cY=14;
 
-    private  List<int[]> pathRoute = new ArrayList<>();
+    public  List<int[]> pathRoute = new ArrayList<>();
 
     private boolean panicMode;
-    private Pathfinder pathfinder;
     
     private int direction;
     
@@ -24,7 +26,6 @@ public class Ghost extends Entity implements ObserverOfPlayer{
     
     public Ghost(PacmanModel model){
         this.model = model;
-        // this.pathfinder = pathfinder; 
     }
     
 
@@ -52,8 +53,8 @@ public class Ghost extends Entity implements ObserverOfPlayer{
     @Override
     public void playerPositionChanged(int x, int y){
         updatePath(x, y);
-        int newDirection = getNextMoveDirection();
-        setDirection(newDirection);
+        // int newDirection = getNextMoveDirection();
+        // setDirection(newDirection);
     }
 
     @Override
@@ -75,62 +76,59 @@ public class Ghost extends Entity implements ObserverOfPlayer{
             this.x = x;
             this.y = y;
         }
+        public Node(int x, int y, Node parent) {
+            this.x = x;
+            this.y = y;
+            this.parent = parent;
+        }
     }
 
-    private void updatePath(int pacmanX, int pacmanY){
+    private void updatePath(int pacmanX, int pacmanY) {
         // BFS
         int boardWidth = model.getBoardWidth();
         int boardHeight = model.getBoardHeight();
+        String[][] board = model.getBoard();
         boolean[][] visitedMap = new boolean[boardHeight][boardWidth];
-        for (int i = 0; i < boardHeight; i++) {
-            for (int j = 0; j < boardWidth; j++) {
-                visitedMap[i][j] = false;
-            }
-        }
 
-        String [][] board = model.getBoard();
-        LinkedList<Node> nodes = new LinkedList<>();
+        Queue<Node> nodes = new ArrayDeque<>();
+        nodes.add(new Node(x, y));
 
-        nodes.add(new Node(x,y));
-        
-        int currentX = x;
-        int currentY = y;
-        while (currentX!=pacmanX && currentY != pacmanY){
-            Node currentNode = nodes.pop();
+        int currentX, currentY;
+
+        while (!nodes.isEmpty()) {
+            Node currentNode = nodes.poll();
             currentX = currentNode.x;
             currentY = currentNode.y;
-            
-            if (board[currentX][currentY+1]!="#"){
-                Node nextNode = new Node(currentX, currentY+1);
-                nextNode.parent = currentNode;
-                nodes.add(nextNode);
-            
-            }else if (board[currentX-1][currentY]!="#"){
-                Node nextNode = new Node(currentX, currentY);
-                nextNode.parent = currentNode;
-                nodes.add(nextNode);
-            
-            }else if (board[currentX][currentY-1]!="#"){
-                Node nextNode = new Node(currentX, currentY-1);
-                nextNode.parent = currentNode;
-                nodes.add(nextNode);
-            
-            }else if (board[currentX+1][currentY]!="#"){
-                Node nextNode = new Node(currentX+1, currentY);
-                nextNode.parent = currentNode;
-                nodes.add(nextNode);
+
+            if (currentX == pacmanX && currentY == pacmanY) {
+                break; // Reached the target
+            }
+
+            if (!visitedMap[currentX][currentY]) {
+                visitedMap[currentX][currentY] = true;
+
+                if (board[currentX][currentY + 1] != "#") {
+                    nodes.add(new Node(currentX, currentY + 1, currentNode));
+                } else if (board[currentX - 1][currentY] != "#") {
+                    nodes.add(new Node(currentX - 1, currentY, currentNode));
+                } else if (board[currentX][currentY - 1] != "#") {
+                    nodes.add(new Node(currentX, currentY - 1, currentNode));
+                } else if (board[currentX + 1][currentY] != "#") {
+                    nodes.add(new Node(currentX + 1, currentY, currentNode));
+                }
             }
         }
 
-        Node findingNode = nodes.pop();
-        while(findingNode.x != this.x && findingNode.y != this.y){
-            int[] nextCoordinate = new int[]{findingNode.x,findingNode.y}; 
-            pathRoute.add(0,nextCoordinate);
+        Node findingNode = nodes.poll();
+        while (findingNode != null) {
+            int[] nextCoordinate = new int[]{findingNode.x, findingNode.y};
+            pathRoute.add(0, nextCoordinate);
+            findingNode = findingNode.parent;
         }
-        pathRoute.add(0,new int[]{x,y});
-
+        pathRoute.add(0, new int[]{x, y});
     }
-    private int getNextMoveDirection(){
+
+    public int getNextMoveDirection(){
         int nextX = pathRoute.get(0)[0];
         int nextY = pathRoute.get(0)[1];
         pathRoute.remove(0);
@@ -147,6 +145,6 @@ public class Ghost extends Entity implements ObserverOfPlayer{
         }else if (nextX==x+1){
             return 4;
         }
-        return 0;
+        return 1;
     }
 }

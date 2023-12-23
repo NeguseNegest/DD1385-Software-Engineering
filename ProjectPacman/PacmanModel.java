@@ -3,25 +3,36 @@ package ProjectPacman;
 
 import java.util.ArrayList;
 
+import ProjectPacman.Ghosts.Ghost;
+
 public class PacmanModel {
 
     private final String interiorWall = "#";
     private final String food = "-";
     private final String door = "d";
     private final String powerUp = "R";
+    private final String redGhost = "Red";
     private final String pacman = "P";
     private String[][] board;
     private int boardWidth; // Array length
     private int boardHeight; // Number of arrays
     private PacPlayer pacmanEntity;
+    private Ghost ghost;
     private String currentDirection = ""; // To store the current direction of Pac-Man
+
     private int beanAmount= 398;
 
     public PacmanModel(PacPlayer pacmanEntity) {
         this.pacmanEntity = pacmanEntity;
         this.pacmanEntity.setLives(3);
         this.pacmanEntity.setDirection(0);
+        ghost  = new Ghost(this);
+        ghost.setDirection(0);
+        pacmanEntity.addObserver(ghost);
         this.initBoard();
+        this.pacmanEntity.notifyPosition();
+        ghost.setDirection(ghost.getNextMoveDirection());
+        System.out.println(ghost.pathRoute.size());
     }
 
     public void resetGame(){
@@ -32,7 +43,8 @@ public class PacmanModel {
 
     public void movePacman() {
         String direction="none";
-        int intDirection = pacmanEntity.getDirection(); 
+        int intDirection = pacmanEntity.getDirection();
+        // ghost.setDirection(pacmanEntity.getDirection()); 
         if (intDirection != 0){
             if (intDirection == 1) {
                 direction = "RIGHT";
@@ -54,32 +66,34 @@ public class PacmanModel {
             return;
         }
 
-        if (!wallCollision(direction)) {
+        if (!wallCollision(x,y,direction)) {
             currentDirection = direction; // Update current direction if no collision
         }
 
         switch (currentDirection) {
             case "UP":
-                if (!wallCollision("UP")) {
+                if (!wallCollision(x,y,"UP")) {
                     movePacmanTo(x - 1, y);
                 }
                 break;
             case "DOWN":
-                if (!wallCollision("DOWN")) {
+                if (!wallCollision(x,y,"DOWN")) {
                     movePacmanTo(x + 1, y);
                 }
                 break;
             case "LEFT":
-                if (!wallCollision("LEFT")) {
+                if (!wallCollision(x,y,"LEFT")) {
                     movePacmanTo(x, y - 1);
                 }
                 break;
             case "RIGHT":
-                if (!wallCollision("RIGHT")) {
+                if (!wallCollision(x,y,"RIGHT")) {
                     movePacmanTo(x, y + 1);
                 }
                 break;
         }
+
+        
     }
     }
 
@@ -103,11 +117,63 @@ public class PacmanModel {
     }
 
 
-    public void moveGhosts(){}
+    public void moveGhosts(){
+        int x = ghost.getX();
+        int y = ghost.getY();
+        String direction="none";
+        int intDirection = ghost.getDirection(); 
+        if (intDirection != 0){
+            if (intDirection == 1) {
+                direction = "RIGHT";
+            } else if (intDirection == 2) {
+                direction = "UP";
+            } else if (intDirection==3){
+                direction = "LEFT";
+            } else if (intDirection==4){
+                direction = "DOWN";
+            }
 
-    public boolean wallCollision(String direction) {
-        int x = pacmanEntity.getX();
-        int y = pacmanEntity.getY();
+        
+
+        switch (direction) {
+            case "UP":
+                if (!wallCollision(x,y,"UP")) {
+                    board[x][y] = "-";
+                    board[x-1][y] = "RedGhost";
+                    ghost.setX(x-1);
+                }
+                break;
+            case "DOWN":
+                if (!wallCollision(x,y,"DOWN")) {
+                    board[x][y] = "-";
+                    board[x+1][y] = "RedGhost";
+                    ghost.setX(x+1);
+                }
+                break;
+            case "LEFT":
+                if (!wallCollision(x,y,"LEFT")) {
+                    board[x][y] = "-";
+                    board[x][y-1] = "RedGhost";
+                    ghost.setY(y-1);
+                }
+                break;
+            case "RIGHT":
+                if (!wallCollision(x,y,"RIGHT")) {
+                    board[x][y] = "-";
+                    board[x][y+1] = "RedGhost";
+                    ghost.setY(y+1);
+                }
+                break;
+        }
+        ghost.setDirection(ghost.getNextMoveDirection());
+    }
+
+
+    }
+
+    public boolean wallCollision(int x, int y, String direction) {
+        // int x = pacmanEntity.getX();
+        // int y = pacmanEntity.getY();
 
         // Check if the next move is valid based on the direction input
         if (direction.equals("UP") && !board[x - 1][y].equals(interiorWall) && !board[x - 1][y].equals(door)) {
@@ -193,7 +259,11 @@ public class PacmanModel {
         boardHeight = board.length;
         // Pacman should be placed at the bottom or top corner at each start of the game. 
         board[boardWidth-2][1]=pacman;
+        board[1][1] = "RedGhost";
         // movePacmanTo(boardWidth-2, 1);
         pacmanEntity.setX(boardWidth-2);
         pacmanEntity.setY(1);
+
+        ghost.setX(1);
+        ghost.setY(1);
     }}

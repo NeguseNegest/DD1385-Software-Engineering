@@ -13,7 +13,9 @@ public class PacPlayer extends Entity{
         super();
     }
 
-    
+    public void addObserver(ObserverOfPlayer observer){
+        this.observers.add(observer);
+    }
     public void notifyPosition(){
         for (ObserverOfPlayer observer : observers) {
             observer.playerPositionChanged(x,y);

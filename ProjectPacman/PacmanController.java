@@ -79,7 +79,7 @@ public class PacmanController implements GameLoopListener{
     public void onGameTick() {
         if (!model.checkLossCondition()) { 
             model.movePacman();
-            // model.moveGhosts();
+            model.moveGhosts();
             if (model.checkWinCondition()) {
                 onGameWin();
             } else if (model.checkLossCondition()) {

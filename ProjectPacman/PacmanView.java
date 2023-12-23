@@ -50,6 +50,9 @@ public class PacmanView extends JPanel{
                 } else if (status.equals(".")){
                     g.setColor(Color.WHITE);
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                } else if (status.equals("RedGhost")){
+                    g.setColor(Color.PINK);
+                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 }
             }
         }
@@ -65,8 +68,8 @@ public class PacmanView extends JPanel{
     }
 
     public void update(){
-        displayInTerminal();
-        System.out.flush();
+        // displayInTerminal();
+        // System.out.flush();
         this.repaint();
     }
 
