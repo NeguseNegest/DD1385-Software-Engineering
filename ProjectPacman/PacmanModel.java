@@ -14,7 +14,6 @@ public class PacmanModel {
     private int boardWidth; // Array length
     private int boardHeight; // Number of arrays
     private PacPlayer pacmanEntity;
-    private ArrayList<String> moves = new ArrayList<>();
     private String currentDirection = ""; // To store the current direction of Pac-Man
     private int beanAmount= 398;
 
@@ -30,19 +29,22 @@ public class PacmanModel {
         this.pacmanEntity.setDirection(0);
         this.initBoard();
     }
-    
-    public String lastMove() {
-        if (!moves.isEmpty()) {
-            return moves.get(moves.size() - 1); // Return the last move
-        } else {
-            return ""; // Return an empty string or a default value if no moves have been made
-        }
-    }
 
-    public void move(String direction) {
+    public void movePacman() {
+        String direction="none";
+        int intDirection = pacmanEntity.getDirection(); 
+        if (intDirection != 0){
+            if (intDirection == 1) {
+                direction = "RIGHT";
+            } else if (intDirection == 2) {
+                direction = "UP";
+            } else if (intDirection==3){
+                direction = "LEFT";
+            } else if (intDirection==4){
+                direction = "DOWN";
+            }
         int x = pacmanEntity.getX();
         int y = pacmanEntity.getY();
-        
         if (x == 14 && y == 0 && direction.equals("LEFT")) { // Check if Pac-Man is at the left tunnel entrance and if so run
             movePacmanTo(14, 27);
             return;
@@ -54,7 +56,6 @@ public class PacmanModel {
 
         if (!wallCollision(direction)) {
             currentDirection = direction; // Update current direction if no collision
-            moves.add(direction); // Add the valid direction to the moves list
         }
 
         switch (currentDirection) {
@@ -80,6 +81,7 @@ public class PacmanModel {
                 break;
         }
     }
+    }
 
     private void movePacmanTo(int newX, int newY) {
         int x = pacmanEntity.getX();
@@ -91,27 +93,17 @@ public class PacmanModel {
 
         if(board[x][y]=="R"){
             pacmanEntity.setScore(5);
+            pacmanEntity.notifyPowerUp();
         }
         
         board[newX][newY] = pacman; // Move to the new position
         pacmanEntity.setX(newX);
         pacmanEntity.setY(newY);
+        pacmanEntity.notifyPosition();
     }
 
-    public void movePacman(){
-        int direction = pacmanEntity.getDirection(); 
-        if (direction != 0){
-            if (direction == 1) {
-                move("RIGHT");
-            } else if (direction == 2) {
-                move("UP");
-            } else if (direction==3){
-                move("LEFT");
-            } else if (direction==4){
-                move("DOWN");
-            }
-        }
-    }
+
+    public void moveGhosts(){}
 
     public boolean wallCollision(String direction) {
         int x = pacmanEntity.getX();
@@ -156,6 +148,10 @@ public class PacmanModel {
 
     public int getBoardHeight() {
         return boardHeight;
+    }
+
+    public String[][] getBoard(){
+        return board;
     }
 
   public  void initBoard(){    

@@ -12,8 +12,6 @@ public class PacmanView extends JPanel{
     public JButton resetButton= new JButton("Reset");
     private Timer messageTimer;
     public PacmanView(PacmanModel model){
-        this.model = model;
-        
         messageTimer = new Timer(500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -21,6 +19,8 @@ public class PacmanView extends JPanel{
             }
         });
         messageTimer.setRepeats(false); // Make sure the timer only fires once
+        this.model = model;
+        
     }
 
     @Override
@@ -85,17 +85,17 @@ public class PacmanView extends JPanel{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setFocusable(true);
     
+        
+        // resetButton.setPreferredSize(new Dimension(80, 30));
         setLayout(new BorderLayout());
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS)); // Use Y_AXIS for vertical alignment
-    
-        resetButton.setPreferredSize(new Dimension(80, 30));
-        buttonPanel.add(resetButton);
         buttonPanel.add(Box.createVerticalStrut(10));    
+        buttonPanel.add(resetButton);
         buttonPanel.add(startButton);
         buttonPanel.add(message);
-    
         add(buttonPanel, BorderLayout.EAST);
+    
     
         frame.add(this);
         frame.setVisible(true);

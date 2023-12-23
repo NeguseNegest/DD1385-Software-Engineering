@@ -24,7 +24,7 @@ public class PacmanController implements GameLoopListener{
         this.view.addKeyListener(arrowKeyPressed); // You need a frame listen to Keys
         timer = new Timer(80, gameLoop);
         this.view.startButton.addActionListener(startButtonPressed);
-        // timer.start();
+        timer.start();
     }
     
 

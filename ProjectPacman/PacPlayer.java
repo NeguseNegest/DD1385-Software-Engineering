@@ -16,20 +16,24 @@ public class PacPlayer extends Entity{
     
     public void notifyPosition(){
         for (ObserverOfPlayer observer : observers) {
-            observer.playerPositionChanged();
+            observer.playerPositionChanged(x,y);
+        }
+    }
+
+    public void notifyPowerUp(){
+        for (ObserverOfPlayer observer : observers) {
+            observer.playerPoweredUp();
         }
     }
     
     @Override
 	public void setX(int x) {
 		this.x = x;
-        notifyPosition();
 	}
 
     @Override
 	public void setY(int y) {
 		this.y = y;
-        notifyPosition();
 	}
     
 
