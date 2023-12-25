@@ -184,8 +184,8 @@ public class PacmanModel {
                 }
                 break;
         }
-        ghost.setDirection(ghost.getNextMoveDirection());
     }
+    ghost.setDirection(ghost.getNextMoveDirection());
 
 
     }
