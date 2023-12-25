@@ -15,7 +15,7 @@ public class PacPlayer extends Entity{
     private Timer notificationCoolDown; 
     public PacPlayer(){
         super();
-        notificationCoolDown = new Timer(1000, new ActionListener() {
+        notificationCoolDown = new Timer(1, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 notificationCoolDown.stop();
@@ -27,7 +27,9 @@ public class PacPlayer extends Entity{
         this.observers.add(observer);
     }
     public void notifyPosition(){
-        notificationCoolDown.start();
+        if (!notificationCoolDown.isRunning()){
+            notificationCoolDown.start();
+        }
         for (ObserverOfPlayer observer : observers) {
             observer.playerPositionChanged(x,y);
         }

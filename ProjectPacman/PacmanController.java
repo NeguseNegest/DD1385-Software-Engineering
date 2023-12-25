@@ -13,10 +13,11 @@ public class PacmanController implements GameLoopListener{
     private PacmanView view;
     private PacPlayer pacmanEntity;
 
+    private int gameTickCounter;
     private Timer timer;
     
     public PacmanController(PacmanModel model, PacmanView view, PacPlayer pacmanEntity){
-        
+        gameTickCounter = 0;
         this.model = model;
         this.view = view;
         this.pacmanEntity = pacmanEntity;
@@ -79,7 +80,11 @@ public class PacmanController implements GameLoopListener{
     public void onGameTick() {
         if (!model.checkLossCondition()) { 
             model.movePacman();
-            model.moveGhosts();
+            // pacmanEntity.q();
+            if (gameTickCounter%2==0){
+                model.moveGhosts();
+            }
+            gameTickCounter++;
             if (model.checkWinCondition()) {
                 onGameWin();
             } else if (model.checkLossCondition()) {

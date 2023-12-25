@@ -2,7 +2,7 @@ package ProjectPacman;
 
 
 import java.util.ArrayList;
-
+import java.lang.Math;
 import ProjectPacman.Ghosts.Ghost;
 
 public class PacmanModel {
@@ -30,15 +30,16 @@ public class PacmanModel {
         ghost.setDirection(0);
         pacmanEntity.addObserver(ghost);
         this.initBoard();
-        this.pacmanEntity.notifyPosition();
-        ghost.setDirection(ghost.getNextMoveDirection());
-        System.out.println(ghost.pathRoute.size());
+        // this.pacmanEntity.notifyPosition();
+        // ghost.setDirection(ghost.getNextMoveDirection());
+        // System.out.println(ghost.pathRoute.size());
     }
 
     public void resetGame(){
         this.pacmanEntity.setLives(3);
         this.pacmanEntity.setDirection(0);
         this.initBoard();
+        // this.pacmanEntity.notifyPosition();
     }
 
     public void movePacman() {
@@ -113,7 +114,10 @@ public class PacmanModel {
         board[newX][newY] = pacman; // Move to the new position
         pacmanEntity.setX(newX);
         pacmanEntity.setY(newY);
-        pacmanEntity.notifyPosition();
+        if (Math.abs(pacmanEntity.getX()-ghost.getX())<7 && Math.abs((pacmanEntity.getY()-ghost.getY()))<7){
+
+            pacmanEntity.notifyPosition();
+        }
     }
 
 
@@ -133,9 +137,24 @@ public class PacmanModel {
                 direction = "DOWN";
             }
 
-        
+        if (x == 14 && y == 0 && direction.equals("LEFT")) { // Check if Pac-Man is at the left tunnel entrance and if so run
+            board[x][y] = "-";
+            board[14][27] = "RedGhost";
+            ghost.setY(27);
+            return;
+        }
+        if (x == 14 && y == 28 - 1 && direction.equals("RIGHT")) { // Check if Pac-Man is at the right tunnel entrance and if so continue 
+            board[x][y] = "-";
+            board[14][0] = "RedGhost";
+            ghost.setY(0);
+            return;
+        }
 
-        switch (direction) {
+        if (!wallCollision(x,y,direction)) {
+            ghost.setCurrentDirection(direction);
+        }
+
+        switch (ghost.getCurrentDirection()) {
             case "UP":
                 if (!wallCollision(x,y,"UP")) {
                     board[x][y] = "-";
