@@ -225,6 +225,6 @@ public class Ghost extends Entity implements ObserverOfPlayer{
         this.currentDirection = currentDirection;
     }
     public String getCurrentDirection(){
-        return currentDirection;
+        return (currentDirection != null) ? currentDirection : new String[]{"none","RIGHT", "UP","LEFT","DOWN"}[getDirection()];
     }
 }

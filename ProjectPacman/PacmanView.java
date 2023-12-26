@@ -11,6 +11,10 @@ public class PacmanView extends JPanel{
     public JButton startButton = new JButton("Start");
     public JButton resetButton= new JButton("Reset");
     private Timer messageTimer;
+
+    // private ImageIcon redGhostIcon = new ImageIcon("red_ghost_image.png");
+    // private ImageIcon redGhostIcon = new ImageIcon(new ImageIcon("red_ghost_image.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+
     public PacmanView(PacmanModel model){
         messageTimer = new Timer(500, new ActionListener() {
             @Override
@@ -45,17 +49,18 @@ public class PacmanView extends JPanel{
                     g.setColor(new Color(139, 69, 19));
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 } else if (status.equals("R")){
-                    g.setColor(Color.RED);
+                    g.setColor(Color.PINK);
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 } else if (status.equals(".")){
                     g.setColor(Color.WHITE);
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 } else if (status.equals("RedGhost")){
-                    g.setColor(Color.PINK);
+                    g.setColor(Color.RED);
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                    // redGhostIcon.paintIcon(this, g, j * cellSize, i * cellSize);
                 }
             }
-        }
+        }   
     }
 
     public void displayMessage(String text){
