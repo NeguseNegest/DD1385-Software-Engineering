@@ -11,7 +11,7 @@ public class PacmanModel {
     private final String door = "d";
     private final String powerUp = "R";
     private final String redGhost = "RedGhost";
-    private final String pacman = "P";
+    private  String pacman="P";
     private boolean[][] foodWasEaten;
     private boolean[][] powerUpExists;
     private String[][] board;
@@ -60,11 +60,11 @@ public class PacmanModel {
         int x = pacmanEntity.getX();
         int y = pacmanEntity.getY();
         if (x == 14 && y == 0 && direction.equals("LEFT")) { // Check if Pac-Man is at the left tunnel entrance and if so run
-            movePacmanTo(14, 27);
+            movePacmanTo(14, 27,"PL");
             return;
         }
         if (x == 14 && y == 28 - 1 && direction.equals("RIGHT")) { // Check if Pac-Man is at the right tunnel entrance and if so continue 
-            movePacmanTo(14, 0);
+            movePacmanTo(14, 0,"P");
             return;
         }
 
@@ -75,22 +75,22 @@ public class PacmanModel {
         switch (currentDirection) {
             case "UP":
                 if (!wallCollision(x,y,"UP")) {
-                    movePacmanTo(x - 1, y);
+                    movePacmanTo(x - 1, y,"PU");
                 }
                 break;
             case "DOWN":
                 if (!wallCollision(x,y,"DOWN")) {
-                    movePacmanTo(x + 1, y);
+                    movePacmanTo(x + 1, y,"PD");
                 }
                 break;
             case "LEFT":
                 if (!wallCollision(x,y,"LEFT")) {
-                    movePacmanTo(x, y - 1);
+                    movePacmanTo(x, y - 1,"PL");
                 }
                 break;
             case "RIGHT":
                 if (!wallCollision(x,y,"RIGHT")) {
-                    movePacmanTo(x, y + 1);
+                    movePacmanTo(x, y + 1,"P");
                 }
                 break;
         }
@@ -99,7 +99,7 @@ public class PacmanModel {
     }
     }
 
-    private void movePacmanTo(int newX, int newY) {
+    private void movePacmanTo(int newX, int newY,String pacman) {
         int x = pacmanEntity.getX();
         int y = pacmanEntity.getY();
         board[x][y] = "."; // Clear the old position

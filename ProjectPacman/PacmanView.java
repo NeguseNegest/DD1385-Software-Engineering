@@ -11,7 +11,7 @@ public class PacmanView extends JPanel{
     public JButton startButton = new JButton("Start");
     public JButton resetButton= new JButton("Reset");
     private Timer messageTimer;
-    private ImageIcon PacmanImage,SmallFood,BigFood,RedGhost,YouLost;
+    private ImageIcon PacManRight,SmallFood,BigFood,RedGhost,PacManUp,PacManDown,PacManLeft;
     private JLabel message = new JLabel("", SwingConstants.CENTER);
 
 
@@ -27,12 +27,14 @@ public class PacmanView extends JPanel{
         });
         messageTimer.setRepeats(false); // Make sure the timer only fires once
         this.model = model;
-        PacmanImage = new ImageIcon("PacManRight.gif");
+        PacManRight = new ImageIcon("PacManRight.gif");
         SmallFood = new ImageIcon("SmallFood.png");
         BigFood = new ImageIcon("BigFood.png");
         RedGhost= new ImageIcon("RedGhost.png");
+        PacManDown= new ImageIcon("down.gif");
+        PacManLeft = new ImageIcon("left.gif");
+        PacManUp= new ImageIcon("PacManUp.gif");
         this.setBackground(Color.BLUE);
-
         
     }
 
@@ -46,8 +48,20 @@ public class PacmanView extends JPanel{
             for (int j=0; j<boardWidth; j++){
                 String status = model.getStatus(i, j);
                 if (status.equals("P")){
-                    PacmanImage.paintIcon(this, g, j * cellSize, i * cellSize);
-                } else if (status.equals("#")){
+                    PacManRight.paintIcon(this, g, j * cellSize, i * cellSize);
+                } 
+                else if (status.equals("PD")){
+                    PacManDown.paintIcon(this, g, j * cellSize, i * cellSize);
+                }
+                else if (status.equals("PL")){
+                    PacManLeft.paintIcon(this, g, j * cellSize, i * cellSize);
+
+                }
+                else if (status.equals("PU")){
+                    PacManUp.paintIcon(this, g, j * cellSize, i * cellSize);
+
+                }
+                else if (status.equals("#")){
                     g.setColor(Color.BLACK);
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 } else if (status.equals("-")){
@@ -115,6 +129,7 @@ public class PacmanView extends JPanel{
     
         frame.add(this);
         frame.setVisible(true);
+        frame.setSize(1000, 1000);
     }
     
 }
