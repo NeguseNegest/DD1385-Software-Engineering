@@ -6,13 +6,14 @@ import java.lang.Math;
 import ProjectPacman.Ghosts.Ghost;
 
 public class PacmanModel {
-
     private final String interiorWall = "#";
     private final String food = "-";
     private final String door = "d";
     private final String powerUp = "R";
-    private final String redGhost = "Red";
+    private final String redGhost = "RedGhost";
     private final String pacman = "P";
+    private boolean[][] foodWasEaten;
+    private boolean[][] powerUpExists;
     private String[][] board;
     private int boardWidth; // Array length
     private int boardHeight; // Number of arrays
@@ -103,20 +104,21 @@ public class PacmanModel {
         int y = pacmanEntity.getY();
         board[x][y] = "."; // Clear the old position
         if(board[x][y]=="-"){
+            foodWasEaten[x][y] = true;
             pacmanEntity.setScore(1);
         }
 
         if(board[x][y]=="R"){
             pacmanEntity.setScore(5);
+            powerUpExists[x][y] = false;
             pacmanEntity.notifyPowerUp();
-        }
-        
-        board[newX][newY] = pacman; // Move to the new position
+            board[newX][newY] = pacman; // Move to the new position
+            
         pacmanEntity.setX(newX);
         pacmanEntity.setY(newY);
         if (Math.abs(pacmanEntity.getX()-ghost.getX())<7 && Math.abs((pacmanEntity.getY()-ghost.getY()))<7){
-
             pacmanEntity.notifyPosition();
+        } else{}
         }
     }
 
@@ -136,15 +138,20 @@ public class PacmanModel {
             } else if (intDirection==4){
                 direction = "DOWN";
             }
-
         if (x == 14 && y == 0 && direction.equals("LEFT")) { // Check if Pac-Man is at the left tunnel entrance and if so run
             board[x][y] = "-";
+            if (foodWasEaten[x][y]){
+                board[x][y] = ".";
+            } 
             board[14][27] = "RedGhost";
             ghost.setY(27);
             return;
         }
         if (x == 14 && y == 28 - 1 && direction.equals("RIGHT")) { // Check if Pac-Man is at the right tunnel entrance and if so continue 
             board[x][y] = "-";
+            if (foodWasEaten[x][y]){
+                board[x][y] = ".";
+            }
             board[14][0] = "RedGhost";
             ghost.setY(0);
             return;
@@ -158,6 +165,11 @@ public class PacmanModel {
             case "UP":
                 if (!wallCollision(x,y,"UP")) {
                     board[x][y] = "-";
+                    if (foodWasEaten[x][y]){
+                        board[x][y] = ".";
+                    }else if (powerUpExists[x][y]){
+                        board[x][y] = "R";
+                    }
                     board[x-1][y] = "RedGhost";
                     ghost.setX(x-1);
                 }
@@ -165,6 +177,11 @@ public class PacmanModel {
             case "DOWN":
                 if (!wallCollision(x,y,"DOWN")) {
                     board[x][y] = "-";
+                    if (foodWasEaten[x][y]){
+                        board[x][y] = ".";
+                    }else if (powerUpExists[x][y]){
+                        board[x][y] = "R";
+                    }
                     board[x+1][y] = "RedGhost";
                     ghost.setX(x+1);
                 }
@@ -172,6 +189,11 @@ public class PacmanModel {
             case "LEFT":
                 if (!wallCollision(x,y,"LEFT")) {
                     board[x][y] = "-";
+                    if (foodWasEaten[x][y]){
+                        board[x][y] = ".";
+                    }else if (powerUpExists[x][y]){
+                        board[x][y] = "R";
+                    }
                     board[x][y-1] = "RedGhost";
                     ghost.setY(y-1);
                 }
@@ -179,6 +201,11 @@ public class PacmanModel {
             case "RIGHT":
                 if (!wallCollision(x,y,"RIGHT")) {
                     board[x][y] = "-";
+                    if (foodWasEaten[x][y]){
+                        board[x][y] = ".";
+                    }else if (powerUpExists[x][y]){
+                        board[x][y] = "R";
+                    }
                     board[x][y+1] = "RedGhost";
                     ghost.setY(y+1);
                 }
@@ -220,6 +247,9 @@ public class PacmanModel {
 
     
     public boolean checkLossCondition(){
+        if ((ghost.getX()==pacmanEntity.getX()) && (ghost.getY()==pacmanEntity.getY())){
+            return true;
+        }
         return false;
     }
 
@@ -274,8 +304,22 @@ public class PacmanModel {
         {"#","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","#"},
         {"#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#","#"}};
         
+
+        
         boardWidth = board[0].length;
         boardHeight = board.length;
+
+        foodWasEaten = new boolean[boardHeight][boardWidth];
+        powerUpExists = new boolean[boardHeight][boardWidth];
+        for (int i=0;i<boardHeight; i++){
+            for (int j = 0; j<boardWidth; j++){
+                if (board[i][j].equals("R")){
+                    powerUpExists[i][j] = true;
+                }
+                foodWasEaten[i][j] = false;
+            }
+        }
+
         // Pacman should be placed at the bottom or top corner at each start of the game. 
         board[boardWidth-2][1]=pacman;
         board[1][1] = "RedGhost";

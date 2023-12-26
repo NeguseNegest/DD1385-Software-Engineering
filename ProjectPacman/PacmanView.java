@@ -11,12 +11,19 @@ public class PacmanView extends JPanel{
     public JButton startButton = new JButton("Start");
     public JButton resetButton= new JButton("Reset");
     private Timer messageTimer;
+    private ImageIcon pacmanIcon;
+    private ImageIcon SmallFood;
+    private ImageIcon BigFood;
+    private ImageIcon RedGhost;
+    private ImageIcon GameOver;
+   
+
 
     // private ImageIcon redGhostIcon = new ImageIcon("red_ghost_image.png");
     // private ImageIcon redGhostIcon = new ImageIcon(new ImageIcon("red_ghost_image.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
 
     public PacmanView(PacmanModel model){
-        messageTimer = new Timer(500, new ActionListener() {
+        messageTimer = new Timer(500, new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
                 clearMessage();
@@ -24,7 +31,13 @@ public class PacmanView extends JPanel{
         });
         messageTimer.setRepeats(false); // Make sure the timer only fires once
         this.model = model;
-        
+        pacmanIcon = new ImageIcon("PacManStatic.png");
+        SmallFood = new ImageIcon("SmallFood.png");
+        BigFood = new ImageIcon("BigFood.png");
+        RedGhost = new ImageIcon("RedGhost.jpg");
+        GameOver = new ImageIcon("GameOver.png");
+    
+
     }
 
     @Override
@@ -37,26 +50,22 @@ public class PacmanView extends JPanel{
             for (int j=0; j<boardWidth; j++){
                 String status = model.getStatus(i, j);
                 if (status.equals("P")){
-                    g.setColor(Color.ORANGE);
-                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                    pacmanIcon.paintIcon(this, g, j * cellSize, i * cellSize);
                 } else if (status.equals("#")){
                     g.setColor(Color.BLACK);
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 } else if (status.equals("-")){
-                    g.setColor(Color.BLUE);
-                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                    SmallFood.paintIcon(this, g, j * cellSize, i * cellSize);
                 } else if (status.equals("d")){
                     g.setColor(new Color(139, 69, 19));
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 } else if (status.equals("R")){
-                    g.setColor(Color.PINK);
-                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                    BigFood.paintIcon(this, g, j * cellSize, i * cellSize);
                 } else if (status.equals(".")){
                     g.setColor(Color.WHITE);
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 } else if (status.equals("RedGhost")){
-                    g.setColor(Color.RED);
-                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                    RedGhost.paintIcon(this, g, j * cellSize, i * cellSize);
                     // redGhostIcon.paintIcon(this, g, j * cellSize, i * cellSize);
                 }
             }

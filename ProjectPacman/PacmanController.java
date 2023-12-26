@@ -79,7 +79,9 @@ public class PacmanController implements GameLoopListener{
     @Override
     public void onGameTick() {
         if (!model.checkLossCondition()) { 
+            
             model.movePacman();
+
             // pacmanEntity.q();
             if (gameTickCounter%2==0){
                 model.moveGhosts();
