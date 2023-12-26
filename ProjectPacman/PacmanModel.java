@@ -21,7 +21,7 @@ public class PacmanModel {
     private Ghost ghost;
     private String currentDirection = ""; // To store the current direction of Pac-Man
 
-    private int beanAmount= 242+20+2;
+    private int beanAmount= 262;
 
     public PacmanModel(PacPlayer pacmanEntity) {
         this.pacmanEntity = pacmanEntity;
@@ -106,11 +106,11 @@ public class PacmanModel {
     
         if (board[newX][newY].equals("-")) {
             foodWasEaten[newX][newY] = true;
-            pacmanEntity.setScore(1);
+            pacmanEntity.setScore(pacmanEntity.getScore() + 1); 
         }
     
         if (board[newX][newY].equals("R")) {
-            pacmanEntity.setScore(5);
+            pacmanEntity.setScore(pacmanEntity.getScore() + 5); 
             powerUpExists[newX][newY] = false;
             pacmanEntity.notifyPowerUp();
         }
