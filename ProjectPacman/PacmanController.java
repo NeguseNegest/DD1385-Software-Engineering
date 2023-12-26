@@ -108,13 +108,14 @@ public class PacmanController implements GameLoopListener{
     @Override
     public void onGameWin() {
         timer.stop();
-        view.displayMessage("You won");
+        pacmanEntity.setScore(0);
+        view.displayMessage("YouWon.png");
     }
 
     @Override
     public void onGameLoss() {
         timer.stop();
-        view.displayMessage("You lost");
+        view.displayMessage("GameOver.png");
     }
 
 }

@@ -7,23 +7,19 @@ import java.awt.event.ActionListener;
 
 public class PacmanView extends JPanel{
     private PacmanModel model;
-    private JLabel message = new JLabel("");
+   //private JLabel message = new JLabel("");
     public JButton startButton = new JButton("Start");
     public JButton resetButton= new JButton("Reset");
     private Timer messageTimer;
-    private ImageIcon pacmanIcon;
-    private ImageIcon SmallFood;
-    private ImageIcon BigFood;
-    private ImageIcon RedGhost;
-    private ImageIcon GameOver;
-   
+    private ImageIcon PacmanImage,SmallFood,BigFood,RedGhost,YouLost;
+    private JLabel message = new JLabel("", SwingConstants.CENTER);
 
 
     // private ImageIcon redGhostIcon = new ImageIcon("red_ghost_image.png");
     // private ImageIcon redGhostIcon = new ImageIcon(new ImageIcon("red_ghost_image.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
 
     public PacmanView(PacmanModel model){
-        messageTimer = new Timer(500, new ActionListener(){
+        messageTimer = new Timer(500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 clearMessage();
@@ -31,13 +27,13 @@ public class PacmanView extends JPanel{
         });
         messageTimer.setRepeats(false); // Make sure the timer only fires once
         this.model = model;
-        pacmanIcon = new ImageIcon("PacManStatic.png");
+        PacmanImage = new ImageIcon("PacManRight.gif");
         SmallFood = new ImageIcon("SmallFood.png");
         BigFood = new ImageIcon("BigFood.png");
-        RedGhost = new ImageIcon("RedGhost.jpg");
-        GameOver = new ImageIcon("GameOver.png");
-    
+        RedGhost= new ImageIcon("RedGhost.png");
+        this.setBackground(Color.BLUE);
 
+        
     }
 
     @Override
@@ -50,32 +46,36 @@ public class PacmanView extends JPanel{
             for (int j=0; j<boardWidth; j++){
                 String status = model.getStatus(i, j);
                 if (status.equals("P")){
-                    pacmanIcon.paintIcon(this, g, j * cellSize, i * cellSize);
+                    PacmanImage.paintIcon(this, g, j * cellSize, i * cellSize);
                 } else if (status.equals("#")){
                     g.setColor(Color.BLACK);
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 } else if (status.equals("-")){
-                    SmallFood.paintIcon(this, g, j * cellSize, i * cellSize);
+                   SmallFood.paintIcon(this, g, j * cellSize, i * cellSize);
                 } else if (status.equals("d")){
                     g.setColor(new Color(139, 69, 19));
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 } else if (status.equals("R")){
                     BigFood.paintIcon(this, g, j * cellSize, i * cellSize);
+
                 } else if (status.equals(".")){
-                    g.setColor(Color.WHITE);
+                    g.setColor(Color.BLUE);
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 } else if (status.equals("RedGhost")){
-                    RedGhost.paintIcon(this, g, j * cellSize, i * cellSize);
+                    
+                   RedGhost.paintIcon(this, g, j * cellSize, i * cellSize);
                     // redGhostIcon.paintIcon(this, g, j * cellSize, i * cellSize);
                 }
             }
         }   
     }
 
-    public void displayMessage(String text){
-        message.setText(text);
+    public void displayMessage(String filename){
+        ImageIcon image = new ImageIcon(filename);
+        message.setIcon(image);
         messageTimer.start();
     }
+    
     public void clearMessage(){
         message.setText("");
         messageTimer.stop();
@@ -102,20 +102,19 @@ public class PacmanView extends JPanel{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setFocusable(true);
     
-        
-        // resetButton.setPreferredSize(new Dimension(80, 30));
         setLayout(new BorderLayout());
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS)); // Use Y_AXIS for vertical alignment
-        buttonPanel.add(Box.createVerticalStrut(10));    
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+        buttonPanel.add(Box.createVerticalStrut(10));
         buttonPanel.add(resetButton);
         buttonPanel.add(startButton);
-        buttonPanel.add(message);
         add(buttonPanel, BorderLayout.EAST);
     
+        // Add message label to the center
+        add(message, BorderLayout.CENTER);
     
         frame.add(this);
         frame.setVisible(true);
     }
+    
 }
-

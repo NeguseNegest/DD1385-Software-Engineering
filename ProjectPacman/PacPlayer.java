@@ -13,6 +13,7 @@ public class PacPlayer extends Entity{
     private int lives=3;
     private List<ObserverOfPlayer> observers = new ArrayList<ObserverOfPlayer>();
     private Timer notificationCoolDown; 
+    //private int tot=0;
     public PacPlayer(){
         super();
         notificationCoolDown = new Timer(1, new ActionListener() {
@@ -54,7 +55,10 @@ public class PacPlayer extends Entity{
 
     
     public void setScore(int score){
-        this.score=score;
+        if(score==0){
+            this.score=score;
+        }
+        this.score+=score;
     }
 
     public int getScore(){

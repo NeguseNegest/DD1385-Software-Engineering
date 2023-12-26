@@ -21,7 +21,7 @@ public class PacmanModel {
     private Ghost ghost;
     private String currentDirection = ""; // To store the current direction of Pac-Man
 
-    private int beanAmount= 398;
+    private int beanAmount= 242+20+2;
 
     public PacmanModel(PacPlayer pacmanEntity) {
         this.pacmanEntity = pacmanEntity;
@@ -103,24 +103,28 @@ public class PacmanModel {
         int x = pacmanEntity.getX();
         int y = pacmanEntity.getY();
         board[x][y] = "."; // Clear the old position
-        if(board[x][y]=="-"){
-            foodWasEaten[x][y] = true;
+    
+        if (board[newX][newY].equals("-")) {
+            foodWasEaten[newX][newY] = true;
             pacmanEntity.setScore(1);
         }
-
-        if(board[x][y]=="R"){
+    
+        if (board[newX][newY].equals("R")) {
             pacmanEntity.setScore(5);
-            powerUpExists[x][y] = false;
+            powerUpExists[newX][newY] = false;
             pacmanEntity.notifyPowerUp();
-            board[newX][newY] = pacman; // Move to the new position
-            
+        }
+    
+        board[newX][newY] = pacman; // Move to the new position
+    
         pacmanEntity.setX(newX);
         pacmanEntity.setY(newY);
-        if (Math.abs(pacmanEntity.getX()-ghost.getX())<7 && Math.abs((pacmanEntity.getY()-ghost.getY()))<7){
+    
+        if (Math.abs(pacmanEntity.getX() - ghost.getX()) < 7 && Math.abs(pacmanEntity.getY() - ghost.getY()) < 7) {
             pacmanEntity.notifyPosition();
-        } else{}
         }
     }
+    
 
 
     public void moveGhosts(){
