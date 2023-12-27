@@ -1,10 +1,9 @@
 package ProjectPacman.Ghosts;
 
-import java.util.ArrayDeque;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Random;
 
 import ProjectPacman.Entity;
@@ -23,18 +22,21 @@ public class Ghost extends Entity implements ObserverOfPlayer{
 
     private boolean panicMode;
     private String symbol;
+    private String defaultSymbol;
     private int direction;
     
     private PacmanModel model;
     Timer notificationCoolDown;
     
-    public Ghost(PacmanModel model){
+    public Ghost(PacmanModel model, String defaultSymbol){
         this.model = model;
         notificationCoolDown = new Timer(1, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             }
         });
+        this.defaultSymbol = defaultSymbol;
+        this.symbol = this.defaultSymbol;
 
     }
     
@@ -73,7 +75,7 @@ public class Ghost extends Entity implements ObserverOfPlayer{
         panicTimer = new Timer(5000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setSymbol("RedGhost");
+                setSymbol(defaultSymbol);
                 panicMode = false;
             }
         });
@@ -131,7 +133,7 @@ public class Ghost extends Entity implements ObserverOfPlayer{
             if (currentX == 14 && currentY == 28 - 1) { 
                 continue;
             }
-            System.out.println("loop");
+            // System.out.println("loop");
 
             if (currentX == pacmanX && currentY == pacmanY) {
 

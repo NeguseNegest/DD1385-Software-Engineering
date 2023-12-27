@@ -20,7 +20,8 @@ public class PacmanModel {
     private int boardWidth; // Array length
     private int boardHeight; // Number of arrays
     private PacPlayer pacmanEntity;
-    private Ghost ghost;
+    // private Ghost ghost;
+    
 
     private List<Ghost> ghostList = new ArrayList<Ghost>(); 
     private int beanAmount;
@@ -30,10 +31,23 @@ public class PacmanModel {
         this.pacmanEntity.setLives(3);
         this.pacmanEntity.setDirection(0);
 
-        ghost = new Ghost(this);
-        ghost.setDirection(0);
-        
-        pacmanEntity.addObserver(ghost);
+        Ghost redGhost = new Ghost(this, "RedGhost");
+        Ghost blueGhost = new Ghost(this, "BlueGhost");
+        Ghost pinkGhost = new Ghost(this, "PinkGhost");
+        Ghost yellowGhost = new Ghost(this,"YellowGhost");
+
+        pacmanEntity.addObserver(redGhost);
+        pacmanEntity.addObserver(blueGhost);
+        pacmanEntity.addObserver(yellowGhost);
+        pacmanEntity.addObserver(pinkGhost);
+
+        ghostList.add(redGhost);
+        ghostList.add(blueGhost);
+        ghostList.add(yellowGhost);
+        ghostList.add(pinkGhost);
+        for (Ghost ghost : ghostList) {
+            ghost.setDirection(0);
+        }
         this.initBoard();
     }
 
@@ -124,17 +138,23 @@ public class PacmanModel {
     
         pacmanEntity.setX(newX);
         pacmanEntity.setY(newY);
-    
-        if (Math.abs(pacmanEntity.getX() - ghost.getX()) < 7 && Math.abs(pacmanEntity.getY() - ghost.getY()) < 7) {
-            if (!ghost.isPanic()){
-                pacmanEntity.notifyPosition();
+
+        for (Ghost ghost : ghostList) {
+            if (Math.abs(pacmanEntity.getX() - ghost.getX()) < 7 && Math.abs(pacmanEntity.getY() - ghost.getY()) < 7) {
+                if (!ghost.isPanic()){
+                    pacmanEntity.notifyPosition();
+                }
             }
         }
     }
     
 
-
     public void moveGhosts(){
+        for (Ghost ghost : ghostList) {
+            moveGhost(ghost);
+        }
+    }
+    public void moveGhost(Ghost ghost){
         int x = ghost.getX();
         int y = ghost.getY();
         String direction="none";
@@ -226,7 +246,7 @@ public class PacmanModel {
         // int y = pacmanEntity.getY();
 
         // Check if the next move is valid based on the direction input
-        if (direction.equals("UP") && !board[x - 1][y].equals(interiorWall) && !board[x - 1][y].equals(door)) {
+        if (direction.equals("UP") && !board[x - 1][y].equals(interiorWall) ) {
             return false;
         } else if (direction.equals("DOWN") && !board[x + 1][y].equals(interiorWall) && !board[x + 1][y].equals(door)) {
             return false;
@@ -243,29 +263,33 @@ public class PacmanModel {
         pacmanEntity.setY(1);
         pacmanEntity.setDirection(0);
 
-        ghost.setX(1);
-        ghost.setY(1);
+        for (Ghost ghost : ghostList) {
+            ghost.SpawnAtCenter();
+            ghost.setDirection(0);
+        }
     }
     
     public boolean checkWinCondition(){
         // if pacman score equal to amount of beans
         // Count how many beans in board i.e "-" symbol
         // returns true if pacMan has eaten all beans buddy. 
-        if(pacmanEntity.getScore()==((beanAmount))){
+        if(pacmanEntity.getScore()==((beanAmount+20))){
             return true;
         }
         return false;
     }
 
     public boolean checkGhostPlayerCollision(){
-        if ((ghost.getX()==pacmanEntity.getX()) && (ghost.getY()==pacmanEntity.getY())){
-            if (ghost.isPanic()){
-                ghost.SpawnAtCenter();
-            } else{
-                pacmanEntity.setLives(pacmanEntity.getLives()-1);
-                resetPositions();
+        for (Ghost ghost : ghostList) {
+            if ((ghost.getX()==pacmanEntity.getX()) && (ghost.getY()==pacmanEntity.getY())){
+                if (ghost.isPanic()){
+                    ghost.SpawnAtCenter();
+                } else{
+                    pacmanEntity.setLives(pacmanEntity.getLives()-1);
+                    resetPositions();
+                }
+                return true;
             }
-            return true;
         }
         return false;
     }
@@ -278,8 +302,10 @@ public class PacmanModel {
     }
 
     public String getStatus(int i, int j) {
-        if (ghost.getX()==i && ghost.getY()==j){
-            return ghost.getSymbol();
+        for (Ghost ghost : ghostList) {
+            if (ghost.getX()==i && ghost.getY()==j){
+                return ghost.getSymbol();
+            }
         }
         if (pacmanEntity.getX()==i && pacmanEntity.getY()==j){
             return pacmanEntity.getSymbol();
@@ -314,7 +340,7 @@ public class PacmanModel {
         {"#","#","#","#","#","#","-","#","#","#","#","#",".","#","#",".","#","#","#","#","#","-","#","#","#","#","#","#"},
         {"#","#","#","#","#","#","-","#","#","#","#","#",".","#","#",".","#","#","#","#","#","-","#","#","#","#","#","#"},
         {"#","#","#","#","#","#","-","#","#",".",".",".",".",".",".",".",".",".",".","#","#","-","#","#","#","#","#","#"},
-        {"#","#","#","#","#","#","-","#","#",".","#","#","#",".",".","#","#","#",".","#","#","-","#","#","#","#","#","#"},
+        {"#","#","#","#","#","#","-","#","#",".","#","#","#","d","d","#","#","#",".","#","#","-","#","#","#","#","#","#"},
         {"#","#","#","#","#","#","-","#","#",".","#",".",".",".",".",".",".","#",".","#","#","-","#","#","#","#","#","#"},
         {".",".",".",".",".",".","-",".",".",".","#",".",".",".",".",".",".","#",".",".",".","-",".",".",".",".",".","."},
         {"#","#","#","#","#","#","-","#","#",".","#",".",".",".",".",".",".","#",".","#","#","-","#","#","#","#","#","#"},
@@ -364,7 +390,9 @@ public class PacmanModel {
         pacmanEntity.setY(1);
         pacmanEntity.setSymbol("P");
 
-        ghost.setX(1);
-        ghost.setY(1);
-        ghost.setSymbol("RedGhost");
+        for (Ghost ghost : ghostList) {
+            ghost.SpawnAtCenter();
+        }
+        // ghost.setX(14);
+        // ghost.setY(11);
     }}

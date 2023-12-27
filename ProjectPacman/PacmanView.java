@@ -11,7 +11,7 @@ public class PacmanView extends JPanel{
     public JButton startButton = new JButton("Start");
     public JButton resetButton= new JButton("Reset");
     
-    private ImageIcon PacManRight,SmallFood,BigFood,RedGhost,PacManUp,PacManDown,PacManLeft, ScaredGhost;
+    private ImageIcon PacManRight,SmallFood,BigFood,RedGhost,PacManUp,PacManDown,PacManLeft, ScaredGhost, BlueGhost, YellowGhost, PinkGhost;
     private JLabel message = new JLabel("", SwingConstants.CENTER);
 
 
@@ -25,7 +25,12 @@ public class PacmanView extends JPanel{
         PacManLeft = new ImageIcon(classLoader.getResource("ProjectPacman/assets/left.gif"));
         SmallFood = new ImageIcon(classLoader.getResource("ProjectPacman/assets/SmallFood.png"));
         BigFood = new ImageIcon(classLoader.getResource("ProjectPacman/assets/BigFood.png"));
+
         RedGhost = new ImageIcon(classLoader.getResource("ProjectPacman/assets/RedGhost.png"));
+        BlueGhost = new ImageIcon(classLoader.getResource("ProjectPacman/assets/Inky.png"));
+        YellowGhost= new ImageIcon(classLoader.getResource("ProjectPacman/assets/YelloClyde.png"));
+        PinkGhost = new ImageIcon(classLoader.getResource("ProjectPacman/assets/Pinky.png"));
+        
         ScaredGhost = new ImageIcon(classLoader.getResource("ProjectPacman/assets/ScaredGhost.gif"));
         this.model = model;
         this.setBackground(Color.BLUE);
@@ -69,12 +74,19 @@ public class PacmanView extends JPanel{
                     g.setColor(Color.BLUE);
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 } else if (status.equals("RedGhost")){
-                    
                    RedGhost.paintIcon(this, g, j * cellSize, i * cellSize);
-                    // redGhostIcon.paintIcon(this, g, j * cellSize, i * cellSize);
                 } else if (status.equals("ScaredGhost")){
                     ScaredGhost.paintIcon(this, g, j*cellSize, i*cellSize);
+                } else if (status.equals("BlueGhost")){
+                    BlueGhost.paintIcon(this, g, j * cellSize, i * cellSize);
                 }
+                else if (status.equals("YellowGhost")){
+                    YellowGhost.paintIcon(this, g, j * cellSize, i * cellSize);
+                }
+                else if(status.equals("PinkGhost")){
+                    PinkGhost.paintIcon(this, g, j * cellSize, i * cellSize);
+                }
+    
             }
         }   
     }
