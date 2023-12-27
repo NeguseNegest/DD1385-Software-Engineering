@@ -10,8 +10,9 @@ public class PacmanView extends JPanel{
    //private JLabel message = new JLabel("");
     public JButton startButton = new JButton("Start");
     public JButton resetButton= new JButton("Reset");
+
     
-    private ImageIcon PacManRight,SmallFood,BigFood,RedGhost,PacManUp,PacManDown,PacManLeft, ScaredGhost, BlueGhost, YellowGhost, PinkGhost;
+    private ImageIcon PacManRight,SmallFood,BigFood,RedGhost,PacManUp,PacManDown,PacManLeft, ScaredGhost, BlueGhost, YellowGhost, PinkGhost,Life;
     private JLabel message = new JLabel("", SwingConstants.CENTER);
 
 
@@ -30,10 +31,11 @@ public class PacmanView extends JPanel{
         BlueGhost = new ImageIcon(classLoader.getResource("ProjectPacman/assets/Inky.png"));
         YellowGhost= new ImageIcon(classLoader.getResource("ProjectPacman/assets/YelloClyde.png"));
         PinkGhost = new ImageIcon(classLoader.getResource("ProjectPacman/assets/Pinky.png"));
+       // Life= new ImageIcon()
         
         ScaredGhost = new ImageIcon(classLoader.getResource("ProjectPacman/assets/ScaredGhost.gif"));
         this.model = model;
-        this.setBackground(Color.BLUE);
+        this.setBackground(Color.BLACK);
     }
 
     @Override
@@ -60,7 +62,7 @@ public class PacmanView extends JPanel{
 
                 }
                 else if (status.equals("#")){
-                    g.setColor(Color.BLACK);
+                    g.setColor(Color.BLUE);
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 } else if (status.equals("-")){
                    SmallFood.paintIcon(this, g, j * cellSize, i * cellSize);
@@ -71,7 +73,7 @@ public class PacmanView extends JPanel{
                     BigFood.paintIcon(this, g, j * cellSize, i * cellSize);
 
                 } else if (status.equals(".")){
-                    g.setColor(Color.BLUE);
+                    g.setColor(Color.BLACK);
                     g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 } else if (status.equals("RedGhost")){
                    RedGhost.paintIcon(this, g, j * cellSize, i * cellSize);
