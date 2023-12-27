@@ -68,11 +68,12 @@ public class Ghost extends Entity implements ObserverOfPlayer{
     @Override
     public void playerPoweredUp(){
         panicMode=true;
-
+        symbol = "ScaredGhost";
         Timer panicTimer;
         panicTimer = new Timer(5000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                symbol = "RedGhost";
                 panicMode = false;
             }
         });

@@ -250,12 +250,19 @@ public class PacmanModel {
 
     public boolean checkGhostPlayerCollision(){
         if ((ghost.getX()==pacmanEntity.getX()) && (ghost.getY()==pacmanEntity.getY())){
+            if (ghost.isPanic()){
+                ghost.SpawnAtCenter();
+            } else{
+                pacmanEntity.setLives(pacmanEntity.getLives()-1);
+            }
             return true;
         }
         return false;
     }
 
     public boolean checkLossCondition(){
+
+        // If player lives is 0 
         if ((ghost.getX()==pacmanEntity.getX()) && (ghost.getY()==pacmanEntity.getY())){
             return true;
         }

@@ -11,7 +11,7 @@ public class PacmanView extends JPanel{
     public JButton startButton = new JButton("Start");
     public JButton resetButton= new JButton("Reset");
     
-    private ImageIcon PacManRight,SmallFood,BigFood,RedGhost,PacManUp,PacManDown,PacManLeft;
+    private ImageIcon PacManRight,SmallFood,BigFood,RedGhost,PacManUp,PacManDown,PacManLeft, ScaredGhost;
     private JLabel message = new JLabel("", SwingConstants.CENTER);
 
 
@@ -26,7 +26,7 @@ public class PacmanView extends JPanel{
         SmallFood = new ImageIcon(classLoader.getResource("ProjectPacman/assets/SmallFood.png"));
         BigFood = new ImageIcon(classLoader.getResource("ProjectPacman/assets/BigFood.png"));
         RedGhost = new ImageIcon(classLoader.getResource("ProjectPacman/assets/RedGhost.png"));
-        
+        ScaredGhost = new ImageIcon(classLoader.getResource("ProjectPacman/assets/ScaredGhost.gif"));
         this.model = model;
         this.setBackground(Color.BLUE);
     }
@@ -72,6 +72,8 @@ public class PacmanView extends JPanel{
                     
                    RedGhost.paintIcon(this, g, j * cellSize, i * cellSize);
                     // redGhostIcon.paintIcon(this, g, j * cellSize, i * cellSize);
+                } else if (status.equals("ScaredGhost")){
+                    ScaredGhost.paintIcon(this, g, j*cellSize, i*cellSize);
                 }
             }
         }   
