@@ -15,27 +15,32 @@ public class PacmanView extends JPanel{
     private JLabel message = new JLabel("", SwingConstants.CENTER);
 
 
-    // private ImageIcon redGhostIcon = new ImageIcon("red_ghost_image.png");
-    // private ImageIcon redGhostIcon = new ImageIcon(new ImageIcon("red_ghost_image.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-
+    
+    private ClassLoader classLoader = getClass().getClassLoader();
     public PacmanView(PacmanModel model){
-        messageTimer = new Timer(500, new ActionListener() {
+        messageTimer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 clearMessage();
             }
         });
+        PacManRight = new ImageIcon(classLoader.getResource("ProjectPacman/assets/PacManRight.gif"));
+        PacManUp = new ImageIcon(classLoader.getResource("ProjectPacman/assets/PacManUp.gif"));
+        PacManDown = new ImageIcon(classLoader.getResource("ProjectPacman/assets/down.gif"));
+        PacManLeft = new ImageIcon(classLoader.getResource("ProjectPacman/assets/left.gif"));
+        SmallFood = new ImageIcon(classLoader.getResource("ProjectPacman/assets/SmallFood.png"));
+        BigFood = new ImageIcon(classLoader.getResource("ProjectPacman/assets/BigFood.png"));
+        RedGhost = new ImageIcon(classLoader.getResource("ProjectPacman/assets/RedGhost.png"));
         messageTimer.setRepeats(false); // Make sure the timer only fires once
         this.model = model;
-        PacManRight = new ImageIcon("PacManRight.gif");
-        SmallFood = new ImageIcon("SmallFood.png");
-        BigFood = new ImageIcon("BigFood.png");
-        RedGhost= new ImageIcon("RedGhost.png");
-        PacManDown= new ImageIcon("down.gif");
-        PacManLeft = new ImageIcon("left.gif");
-        PacManUp= new ImageIcon("PacManUp.gif");
+        // PacManRight = new ImageIcon("PacManRight.gif");
+        // SmallFood = new ImageIcon("SmallFood.png");
+        // BigFood = new ImageIcon("BigFood.png");
+        // RedGhost= new ImageIcon("RedGhost.png");
+        // PacManDown= new ImageIcon("down.gif");
+        // PacManLeft = new ImageIcon("left.gif");
+        // PacManUp= new ImageIcon("PacManUp.gif");
         this.setBackground(Color.BLUE);
-        
     }
 
     @Override
@@ -84,15 +89,16 @@ public class PacmanView extends JPanel{
         }   
     }
 
-    public void displayMessage(String filename){
-        ImageIcon image = new ImageIcon(filename);
+    public void displayMessage(String input){
+        ImageIcon image = new ImageIcon(classLoader.getResource(input));
         message.setIcon(image);
-        messageTimer.start();
+        // messageTimer.start();
     }
     
     public void clearMessage(){
-        message.setText("");
-        messageTimer.stop();
+        // message.setText("");
+        message.setIcon(null);
+        // messageTimer.stop();
     }
 
     public void update(){

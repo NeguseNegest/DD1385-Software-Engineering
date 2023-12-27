@@ -102,20 +102,21 @@ public class PacmanController implements GameLoopListener{
         model.resetGame();
         timer.restart();
         view.requestFocusInWindow();
-        view.displayMessage("Game was reset");
+        view.clearMessage();
+        // view.displayMessage("Game was reset");
     }
     
     @Override
     public void onGameWin() {
         timer.stop();
         pacmanEntity.setScore(0);
-        view.displayMessage("YouWon.png");
+        view.displayMessage("ProjectPacman/assets/YouWon.png");
     }
 
     @Override
     public void onGameLoss() {
         timer.stop();
-        view.displayMessage("GameOver.png");
+        view.displayMessage("ProjectPacman/assets/GameOver.png");
     }
 
 }
