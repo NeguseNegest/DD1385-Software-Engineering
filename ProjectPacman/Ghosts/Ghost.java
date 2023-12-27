@@ -15,8 +15,8 @@ import java.awt.event.ActionListener;
 
 public class Ghost extends Entity implements ObserverOfPlayer{
     
-    private final int cX=13;
-    private final int cY=14;
+    private final int cX=15;
+    private final int cY=15;
 
     public  List<int[]> pathRoute = new ArrayList<>();
 
@@ -40,11 +40,21 @@ public class Ghost extends Entity implements ObserverOfPlayer{
 
     }
     
-
     public void SpawnAtCenter(){
         setX(cX);
         setY(cY);
-        return;
+    }
+
+    public void SpawnAtCenter(int seconds){
+        Timer timer = new Timer(seconds*5000, new ActionListener(){
+             @Override
+             public void actionPerformed(ActionEvent e){
+                SpawnAtCenter();
+                setSymbol(defaultSymbol);
+             }
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
     
     
@@ -58,13 +68,13 @@ public class Ghost extends Entity implements ObserverOfPlayer{
 
     @Override
     public void playerPositionChanged(int x, int y){
-        if (notificationCoolDown.isRunning()){
-            return;
-        }
+        // if (notificationCoolDown.isRunning()){
+        //     return;
+        // }
         updatePath(x, y);
         int newDirection = getNextMoveDirection();
         setDirection(newDirection);
-        notificationCoolDown.restart();
+        // notificationCoolDown.restart();
     }
 
     @Override
@@ -119,7 +129,7 @@ public class Ghost extends Entity implements ObserverOfPlayer{
 
         int currentX, currentY;
 
-        System.out.println(pacmanY);
+        // System.out.println(pacmanY);
         while (!nodes.isEmpty()) {
             // System.out.println("Update");
             Node currentNode = nodes.pop();

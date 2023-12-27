@@ -74,18 +74,20 @@ public class PacmanModel {
 
         int x = pacmanEntity.getX();
         int y = pacmanEntity.getY();
-        if (x == 14 && y == 0 && direction.equals("LEFT")) { // Check if Pac-Man is at the left tunnel entrance and if so run
+
+        
+        if (x == 14 && y == 0 && pacmanEntity.getCurrentDirection().equals("LEFT")) { // Check if Pac-Man is at the left tunnel entrance and if so run
             movePacmanTo(14, 27,"PL");
             return;
         }
-        if (x == 14 && y == 27 && direction.equals("RIGHT")) { // Check if Pac-Man is at the right tunnel entrance and if so continue 
+        if (x == 14 && y == 27 && pacmanEntity.getCurrentDirection().equals("RIGHT")) { // Check if Pac-Man is at the right tunnel entrance and if so continue 
             movePacmanTo(14, 0,"P");
             return;
         }
-
         if (!wallCollision(x,y,direction)) {
             pacmanEntity.setCurrentDirection(direction);; // Update current direction if no collision
         }
+
 
         switch (pacmanEntity.getCurrentDirection()) {
             case "UP":
@@ -121,7 +123,7 @@ public class PacmanModel {
     private void movePacmanTo(int newX, int newY,String pacman) {
         int x = pacmanEntity.getX();
         int y = pacmanEntity.getY();
-        board[x][y] = emptyTile; // Clear the old position
+        // board[x][y] = emptyTile; // Clear the old position
     
         if (board[newX][newY].equals(food)) {
             foodWasEaten[newX][newY] = true;
@@ -138,9 +140,10 @@ public class PacmanModel {
     
         pacmanEntity.setX(newX);
         pacmanEntity.setY(newY);
+        board[newX][newY] = emptyTile;
 
         for (Ghost ghost : ghostList) {
-            if (Math.abs(pacmanEntity.getX() - ghost.getX()) < 7 && Math.abs(pacmanEntity.getY() - ghost.getY()) < 7) {
+            if (Math.abs(pacmanEntity.getX() - ghost.getX()) < 10 && Math.abs(pacmanEntity.getY() - ghost.getY()) < 10) {
                 if (!ghost.isPanic()){
                     pacmanEntity.notifyPosition();
                 }
@@ -270,13 +273,20 @@ public class PacmanModel {
     }
     
     public boolean checkWinCondition(){
+        for (int i = 0; i < boardHeight; i++) {
+            for (int j = 0; j < boardWidth; j++) {
+                if (board[i][j].equals("-")){
+                    return false;
+                }
+            }
+        }
         // if pacman score equal to amount of beans
         // Count how many beans in board i.e "-" symbol
         // returns true if pacMan has eaten all beans buddy. 
-        if(pacmanEntity.getScore()==((beanAmount+20))){
-            return true;
-        }
-        return false;
+
+        // return (pacmanEntity.getScore()==beanAmount);
+        return true;
+
     }
 
     public boolean checkGhostPlayerCollision(){
@@ -284,6 +294,8 @@ public class PacmanModel {
             if ((ghost.getX()==pacmanEntity.getX()) && (ghost.getY()==pacmanEntity.getY())){
                 if (ghost.isPanic()){
                     ghost.SpawnAtCenter();
+                    // ghost.setSymbol(board[ghost.getX()][ghost.getY()]);
+                    // ghost.SpawnAtCenter(3);
                 } else{
                     pacmanEntity.setLives(pacmanEntity.getLives()-1);
                     resetPositions();
@@ -368,7 +380,7 @@ public class PacmanModel {
         foodWasEaten = new boolean[boardHeight][boardWidth];
         powerUpExists = new boolean[boardHeight][boardWidth];
 
-        beanAmount=-1;
+        beanAmount=0;
         for (int i=0;i<boardHeight; i++){
             for (int j = 0; j<boardWidth; j++){
                 if (board[i][j].equals("R")){

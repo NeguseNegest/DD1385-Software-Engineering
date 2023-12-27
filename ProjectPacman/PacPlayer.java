@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PacPlayer extends Entity{
-    private int score=0;
+    private int score;
     private int direction;
     private String currentDirection;
     private String symbol;
@@ -60,7 +60,7 @@ public class PacPlayer extends Entity{
 
     }
 
-    public  int getScore(){
+    public int getScore(){
 
         return this.score;
     }
