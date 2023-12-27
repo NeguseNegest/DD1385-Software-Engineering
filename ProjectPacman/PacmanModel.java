@@ -33,7 +33,6 @@ public class PacmanModel {
         ghost = new Ghost(this);
         ghost.setDirection(0);
         
-        
         pacmanEntity.addObserver(ghost);
         this.initBoard();
     }
@@ -127,7 +126,9 @@ public class PacmanModel {
         pacmanEntity.setY(newY);
     
         if (Math.abs(pacmanEntity.getX() - ghost.getX()) < 7 && Math.abs(pacmanEntity.getY() - ghost.getY()) < 7) {
-            pacmanEntity.notifyPosition();
+            if (!ghost.isPanic()){
+                pacmanEntity.notifyPosition();
+            }
         }
     }
     
@@ -237,6 +238,14 @@ public class PacmanModel {
         return true;
     }
 
+    public void resetPositions(){
+        pacmanEntity.setX(boardWidth-2);
+        pacmanEntity.setY(1);
+        pacmanEntity.setDirection(0);
+
+        ghost.setX(1);
+        ghost.setY(1);
+    }
     
     public boolean checkWinCondition(){
         // if pacman score equal to amount of beans
@@ -254,6 +263,7 @@ public class PacmanModel {
                 ghost.SpawnAtCenter();
             } else{
                 pacmanEntity.setLives(pacmanEntity.getLives()-1);
+                resetPositions();
             }
             return true;
         }
@@ -261,9 +271,7 @@ public class PacmanModel {
     }
 
     public boolean checkLossCondition(){
-
-        // If player lives is 0 
-        if ((ghost.getX()==pacmanEntity.getX()) && (ghost.getY()==pacmanEntity.getY())){
+        if (pacmanEntity.getLives()==0){
             return true;
         }
         return false;
@@ -306,7 +314,7 @@ public class PacmanModel {
         {"#","#","#","#","#","#","-","#","#","#","#","#",".","#","#",".","#","#","#","#","#","-","#","#","#","#","#","#"},
         {"#","#","#","#","#","#","-","#","#","#","#","#",".","#","#",".","#","#","#","#","#","-","#","#","#","#","#","#"},
         {"#","#","#","#","#","#","-","#","#",".",".",".",".",".",".",".",".",".",".","#","#","-","#","#","#","#","#","#"},
-        {"#","#","#","#","#","#","-","#","#",".","#","#","#","d","d","#","#","#",".","#","#","-","#","#","#","#","#","#"},
+        {"#","#","#","#","#","#","-","#","#",".","#","#","#",".",".","#","#","#",".","#","#","-","#","#","#","#","#","#"},
         {"#","#","#","#","#","#","-","#","#",".","#",".",".",".",".",".",".","#",".","#","#","-","#","#","#","#","#","#"},
         {".",".",".",".",".",".","-",".",".",".","#",".",".",".",".",".",".","#",".",".",".","-",".",".",".",".",".","."},
         {"#","#","#","#","#","#","-","#","#",".","#",".",".",".",".",".",".","#",".","#","#","-","#","#","#","#","#","#"},

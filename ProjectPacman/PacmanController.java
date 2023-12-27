@@ -84,8 +84,10 @@ public class PacmanController implements GameLoopListener{
             model.movePacman();
             if (model.checkWinCondition()) {
                 onGameWin();
-            } else if (model.checkLossCondition()) {
-                onGameLoss();
+            } else if (model.checkGhostPlayerCollision()) {
+                if (model.checkLossCondition()){
+                    onGameLoss();
+                }
             }
             view.update();
 
@@ -96,8 +98,10 @@ public class PacmanController implements GameLoopListener{
             gameTickCounter++;
             if (model.checkWinCondition()) {
                 onGameWin();
-            } else if (model.checkLossCondition()) {
-                onGameLoss();
+            } else if (model.checkGhostPlayerCollision()) {
+                if (model.checkLossCondition()){
+                    onGameLoss();
+                }
             }
             view.update();
 

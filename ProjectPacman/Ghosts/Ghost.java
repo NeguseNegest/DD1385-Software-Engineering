@@ -68,17 +68,21 @@ public class Ghost extends Entity implements ObserverOfPlayer{
     @Override
     public void playerPoweredUp(){
         panicMode=true;
-        symbol = "ScaredGhost";
+        setSymbol("ScaredGhost");
         Timer panicTimer;
         panicTimer = new Timer(5000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                symbol = "RedGhost";
+                setSymbol("RedGhost");
                 panicMode = false;
             }
         });
         panicTimer.setRepeats(false); // Make sure the timer only fires once
-        panicTimer.start();
+        if (panicTimer.isRunning()){
+            panicTimer.restart();
+        }else{
+            panicTimer.start();
+        }
 
         // Write a random walk that diverges from players path maybe here while panicMode is true
         // Add a timer that turns panicMode to false
