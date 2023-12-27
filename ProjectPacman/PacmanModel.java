@@ -2,16 +2,18 @@ package ProjectPacman;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.lang.Math;
 import ProjectPacman.Ghosts.Ghost;
 
 public class PacmanModel {
+
     private final String interiorWall = "#";
     private final String food = "-";
+    private final String emptyTile = ".";
     private final String door = "d";
     private final String powerUp = "R";
-    private final String redGhost = "RedGhost";
-    private  String pacman="P";
+
     private boolean[][] foodWasEaten;
     private boolean[][] powerUpExists;
     private String[][] board;
@@ -19,34 +21,33 @@ public class PacmanModel {
     private int boardHeight; // Number of arrays
     private PacPlayer pacmanEntity;
     private Ghost ghost;
-    private String currentDirection = ""; // To store the current direction of Pac-Man
 
-    private int beanAmount= 262;
+    private List<Ghost> ghostList = new ArrayList<Ghost>(); 
+    private int beanAmount;
 
     public PacmanModel(PacPlayer pacmanEntity) {
         this.pacmanEntity = pacmanEntity;
         this.pacmanEntity.setLives(3);
         this.pacmanEntity.setDirection(0);
-        ghost  = new Ghost(this);
+
+        ghost = new Ghost(this);
         ghost.setDirection(0);
+        
+        
         pacmanEntity.addObserver(ghost);
         this.initBoard();
-        // this.pacmanEntity.notifyPosition();
-        // ghost.setDirection(ghost.getNextMoveDirection());
-        // System.out.println(ghost.pathRoute.size());
     }
 
     public void resetGame(){
         this.pacmanEntity.setLives(3);
         this.pacmanEntity.setDirection(0);
+        this.pacmanEntity.setScore(0);
         this.initBoard();
-        // this.pacmanEntity.notifyPosition();
     }
 
     public void movePacman() {
         String direction="none";
         int intDirection = pacmanEntity.getDirection();
-        // ghost.setDirection(pacmanEntity.getDirection()); 
         if (intDirection != 0){
             if (intDirection == 1) {
                 direction = "RIGHT";
@@ -57,40 +58,45 @@ public class PacmanModel {
             } else if (intDirection==4){
                 direction = "DOWN";
             }
+
         int x = pacmanEntity.getX();
         int y = pacmanEntity.getY();
         if (x == 14 && y == 0 && direction.equals("LEFT")) { // Check if Pac-Man is at the left tunnel entrance and if so run
             movePacmanTo(14, 27,"PL");
             return;
         }
-        if (x == 14 && y == 28 - 1 && direction.equals("RIGHT")) { // Check if Pac-Man is at the right tunnel entrance and if so continue 
+        if (x == 14 && y == 27 && direction.equals("RIGHT")) { // Check if Pac-Man is at the right tunnel entrance and if so continue 
             movePacmanTo(14, 0,"P");
             return;
         }
 
         if (!wallCollision(x,y,direction)) {
-            currentDirection = direction; // Update current direction if no collision
+            pacmanEntity.setCurrentDirection(direction);; // Update current direction if no collision
         }
 
-        switch (currentDirection) {
+        switch (pacmanEntity.getCurrentDirection()) {
             case "UP":
                 if (!wallCollision(x,y,"UP")) {
                     movePacmanTo(x - 1, y,"PU");
+                    pacmanEntity.setSymbol("PU");
                 }
                 break;
             case "DOWN":
                 if (!wallCollision(x,y,"DOWN")) {
                     movePacmanTo(x + 1, y,"PD");
+                    pacmanEntity.setSymbol("PD");
                 }
                 break;
             case "LEFT":
                 if (!wallCollision(x,y,"LEFT")) {
                     movePacmanTo(x, y - 1,"PL");
+                    pacmanEntity.setSymbol("PL");
                 }
                 break;
             case "RIGHT":
                 if (!wallCollision(x,y,"RIGHT")) {
                     movePacmanTo(x, y + 1,"P");
+                    pacmanEntity.setSymbol("P");
                 }
                 break;
         }
@@ -102,20 +108,20 @@ public class PacmanModel {
     private void movePacmanTo(int newX, int newY,String pacman) {
         int x = pacmanEntity.getX();
         int y = pacmanEntity.getY();
-        board[x][y] = "."; // Clear the old position
+        board[x][y] = emptyTile; // Clear the old position
     
-        if (board[newX][newY].equals("-")) {
+        if (board[newX][newY].equals(food)) {
             foodWasEaten[newX][newY] = true;
             pacmanEntity.setScore(pacmanEntity.getScore() + 1); 
         }
     
-        if (board[newX][newY].equals("R")) {
-            pacmanEntity.setScore(pacmanEntity.getScore() + 5); 
+        if (board[newX][newY].equals(powerUp)) {
+            // pacmanEntity.setScore(pacmanEntity.getScore() + 5); 
             powerUpExists[newX][newY] = false;
             pacmanEntity.notifyPowerUp();
         }
     
-        board[newX][newY] = pacman; // Move to the new position
+        // board[newX][newY] = pacman; // Move to the new position
     
         pacmanEntity.setX(newX);
         pacmanEntity.setY(newY);
@@ -143,20 +149,13 @@ public class PacmanModel {
                 direction = "DOWN";
             }
         if (x == 14 && y == 0 && direction.equals("LEFT")) { // Check if Pac-Man is at the left tunnel entrance and if so run
-            board[x][y] = "-";
-            if (foodWasEaten[x][y]){
-                board[x][y] = ".";
-            } 
-            board[14][27] = "RedGhost";
+            // board[14][27] = "RedGhost";
             ghost.setY(27);
             return;
         }
         if (x == 14 && y == 28 - 1 && direction.equals("RIGHT")) { // Check if Pac-Man is at the right tunnel entrance and if so continue 
-            board[x][y] = "-";
-            if (foodWasEaten[x][y]){
-                board[x][y] = ".";
-            }
-            board[14][0] = "RedGhost";
+
+            // board[14][0] = "RedGhost";
             ghost.setY(0);
             return;
         }
@@ -168,49 +167,49 @@ public class PacmanModel {
         switch (ghost.getCurrentDirection()) {
             case "UP":
                 if (!wallCollision(x,y,"UP")) {
-                    board[x][y] = "-";
-                    if (foodWasEaten[x][y]){
-                        board[x][y] = ".";
-                    }else if (powerUpExists[x][y]){
-                        board[x][y] = "R";
-                    }
-                    board[x-1][y] = "RedGhost";
+                    // board[x][y] = "-";
+                    // if (foodWasEaten[x][y]){
+                    //     board[x][y] = ".";
+                    // }else if (powerUpExists[x][y]){
+                    //     board[x][y] = "R";
+                    // }
+                    // board[x-1][y] = "RedGhost";
                     ghost.setX(x-1);
                 }
                 break;
             case "DOWN":
                 if (!wallCollision(x,y,"DOWN")) {
-                    board[x][y] = "-";
-                    if (foodWasEaten[x][y]){
-                        board[x][y] = ".";
-                    }else if (powerUpExists[x][y]){
-                        board[x][y] = "R";
-                    }
-                    board[x+1][y] = "RedGhost";
+                    // board[x][y] = "-";
+                    // if (foodWasEaten[x][y]){
+                    //     board[x][y] = ".";
+                    // }else if (powerUpExists[x][y]){
+                    //     board[x][y] = "R";
+                    // }
+                    // board[x+1][y] = "RedGhost";
                     ghost.setX(x+1);
                 }
                 break;
             case "LEFT":
                 if (!wallCollision(x,y,"LEFT")) {
-                    board[x][y] = "-";
-                    if (foodWasEaten[x][y]){
-                        board[x][y] = ".";
-                    }else if (powerUpExists[x][y]){
-                        board[x][y] = "R";
-                    }
-                    board[x][y-1] = "RedGhost";
+                    // board[x][y] = "-";
+                    // if (foodWasEaten[x][y]){
+                    //     board[x][y] = ".";
+                    // }else if (powerUpExists[x][y]){
+                    //     board[x][y] = "R";
+                    // }
+                    // board[x][y-1] = "RedGhost";
                     ghost.setY(y-1);
                 }
                 break;
             case "RIGHT":
                 if (!wallCollision(x,y,"RIGHT")) {
-                    board[x][y] = "-";
-                    if (foodWasEaten[x][y]){
-                        board[x][y] = ".";
-                    }else if (powerUpExists[x][y]){
-                        board[x][y] = "R";
-                    }
-                    board[x][y+1] = "RedGhost";
+                    // board[x][y] = "-";
+                    // if (foodWasEaten[x][y]){
+                    //     board[x][y] = ".";
+                    // }else if (powerUpExists[x][y]){
+                    //     board[x][y] = "R";
+                    // }
+                    // board[x][y+1] = "RedGhost";
                     ghost.setY(y+1);
                 }
                 break;
@@ -249,7 +248,13 @@ public class PacmanModel {
         return false;
     }
 
-    
+    public boolean checkGhostPlayerCollision(){
+        if ((ghost.getX()==pacmanEntity.getX()) && (ghost.getY()==pacmanEntity.getY())){
+            return true;
+        }
+        return false;
+    }
+
     public boolean checkLossCondition(){
         if ((ghost.getX()==pacmanEntity.getX()) && (ghost.getY()==pacmanEntity.getY())){
             return true;
@@ -258,6 +263,12 @@ public class PacmanModel {
     }
 
     public String getStatus(int i, int j) {
+        if (ghost.getX()==i && ghost.getY()==j){
+            return ghost.getSymbol();
+        }
+        if (pacmanEntity.getX()==i && pacmanEntity.getY()==j){
+            return pacmanEntity.getSymbol();
+        }
         return board[i][j];
     }
 
@@ -312,25 +323,33 @@ public class PacmanModel {
         
         boardWidth = board[0].length;
         boardHeight = board.length;
-
+        
         foodWasEaten = new boolean[boardHeight][boardWidth];
         powerUpExists = new boolean[boardHeight][boardWidth];
+
+        beanAmount=-1;
         for (int i=0;i<boardHeight; i++){
             for (int j = 0; j<boardWidth; j++){
                 if (board[i][j].equals("R")){
                     powerUpExists[i][j] = true;
                 }
                 foodWasEaten[i][j] = false;
+
+                if (board[i][j].equals("-")){
+                    beanAmount+=1;
+                }
             }
         }
 
         // Pacman should be placed at the bottom or top corner at each start of the game. 
-        board[boardWidth-2][1]=pacman;
-        board[1][1] = "RedGhost";
+        // board[boardWidth-2][1]=pacman;
+        // board[1][1] = "RedGhost";
         // movePacmanTo(boardWidth-2, 1);
         pacmanEntity.setX(boardWidth-2);
         pacmanEntity.setY(1);
+        pacmanEntity.setSymbol("P");
 
         ghost.setX(1);
         ghost.setY(1);
+        ghost.setSymbol("RedGhost");
     }}

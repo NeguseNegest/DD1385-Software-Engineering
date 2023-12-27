@@ -78,11 +78,18 @@ public class PacmanController implements GameLoopListener{
 
     @Override
     public void onGameTick() {
-        if (!model.checkLossCondition()) { 
+        if (!model.checkLossCondition()) {             
             
+            // Move pacman
             model.movePacman();
+            if (model.checkWinCondition()) {
+                onGameWin();
+            } else if (model.checkLossCondition()) {
+                onGameLoss();
+            }
+            view.update();
 
-            // pacmanEntity.q();
+            // Move Ghosts
             if (gameTickCounter%2==0){
                 model.moveGhosts();
             }
@@ -102,20 +109,22 @@ public class PacmanController implements GameLoopListener{
         model.resetGame();
         timer.restart();
         view.requestFocusInWindow();
-        view.displayMessage("Game was reset");
+        view.clearMessage();
+        view.displayMessage("ProjectPacman/assets/reset.png");
+        view.clearMessage(1);
     }
     
     @Override
     public void onGameWin() {
         timer.stop();
         pacmanEntity.setScore(0);
-        view.displayMessage("YouWon.png");
+        view.displayMessage("ProjectPacman/assets/YouWon.png");
     }
 
     @Override
     public void onGameLoss() {
         timer.stop();
-        view.displayMessage("GameOver.png");
+        view.displayMessage("ProjectPacman/assets/GameOver.png");
     }
 
 }

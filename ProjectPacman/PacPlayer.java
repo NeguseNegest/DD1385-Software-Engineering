@@ -3,17 +3,17 @@ package ProjectPacman;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PacPlayer extends Entity{
     private int score=0;
     private int direction;
+    private String currentDirection;
+    private String symbol;
     private int lives=3;
     private List<ObserverOfPlayer> observers = new ArrayList<ObserverOfPlayer>();
     private Timer notificationCoolDown; 
-    private int tot=0;
     public PacPlayer(){
         super();
         notificationCoolDown = new Timer(1, new ActionListener() {
@@ -80,5 +80,19 @@ public class PacPlayer extends Entity{
         return direction;
     }
 
+    public void setCurrentDirection(String currentDirection){
+        this.currentDirection = currentDirection;
+    }
+    public String getCurrentDirection(){
+        return (currentDirection != null) ? currentDirection : new String[]{"none","RIGHT", "UP","LEFT","DOWN"}[getDirection()];
+    }
+
+    public void setSymbol(String symbol){
+        this.symbol = symbol;
+    }
+
+    public String getSymbol(){
+        return symbol;
+    }
 
 }

@@ -22,34 +22,27 @@ public class Ghost extends Entity implements ObserverOfPlayer{
     public  List<int[]> pathRoute = new ArrayList<>();
 
     private boolean panicMode;
-    
+    private String symbol;
     private int direction;
-    private Timer notificationCoolDown;
-    private PacmanModel model;
     
+    private PacmanModel model;
+    Timer notificationCoolDown;
     
     public Ghost(PacmanModel model){
         this.model = model;
         notificationCoolDown = new Timer(1, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                notificationCoolDown.stop();
             }
         });
+
     }
     
 
     public void SpawnAtCenter(){
-        if(Eaten()){
-            setX(cX);
-            setY(cY);
-        }
+        setX(cX);
+        setY(cY);
         return;
-    }
-
-    public boolean Eaten(){
-        return true;
-                
     }
     
     
@@ -60,23 +53,31 @@ public class Ghost extends Entity implements ObserverOfPlayer{
         return direction;
     }
 
+
     @Override
     public void playerPositionChanged(int x, int y){
-
-        if (!notificationCoolDown.isRunning()){
-            notificationCoolDown.start();
+        if (notificationCoolDown.isRunning()){
+            return;
         }
         updatePath(x, y);
         int newDirection = getNextMoveDirection();
         setDirection(newDirection);
+        notificationCoolDown.restart();
     }
 
     @Override
     public void playerPoweredUp(){
         panicMode=true;
-        while(panicMode){
-            break;
-        }
+
+        Timer panicTimer;
+        panicTimer = new Timer(5000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panicMode = false;
+            }
+        });
+        panicTimer.setRepeats(false); // Make sure the timer only fires once
+        panicTimer.start();
 
         // Write a random walk that diverges from players path maybe here while panicMode is true
         // Add a timer that turns panicMode to false
@@ -221,10 +222,23 @@ public class Ghost extends Entity implements ObserverOfPlayer{
 
 
     private String currentDirection;
+    
     public void setCurrentDirection(String currentDirection){
         this.currentDirection = currentDirection;
     }
     public String getCurrentDirection(){
         return (currentDirection != null) ? currentDirection : new String[]{"none","RIGHT", "UP","LEFT","DOWN"}[getDirection()];
+    }
+
+    public void setSymbol(String symbol){
+        this.symbol = symbol;
+    }
+
+    public String getSymbol(){
+        return symbol;
+    }
+
+    public boolean isPanic(){
+        return panicMode;
     }
 }
