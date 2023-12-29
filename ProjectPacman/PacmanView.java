@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 
 public class PacmanView extends JPanel{
     private PacmanModel model;
-   //private JLabel message = new JLabel("");
     public JButton startButton = new JButton("Start");
     public JButton resetButton= new JButton("Reset");
 
@@ -130,7 +129,7 @@ public class PacmanView extends JPanel{
     }
     public void initGUI() {
         JFrame frame = new JFrame("Game");
-        frame.setSize(670, 650);
+        frame.setSize(800, 700);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setFocusable(true);
     
@@ -147,7 +146,6 @@ public class PacmanView extends JPanel{
     
         frame.add(this);
         frame.setVisible(true);
-        frame.setSize(1000, 1000);
     }
     
 }
