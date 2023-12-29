@@ -246,7 +246,7 @@ public class PacmanModel {
 
     }
 
-    public boolean checkGhostPlayerCollision(){
+    public void handleGhostPlayerCollision(){
         for (Ghost ghost : ghostList) {
             if ((ghost.getX()==pacmanEntity.getX()) && (ghost.getY()==pacmanEntity.getY())){
                 if (ghost.isPanic()){
@@ -255,10 +255,8 @@ public class PacmanModel {
                     pacmanEntity.setLives(pacmanEntity.getLives()-1);
                     resetPositions();
                 }
-                return true;
             }
         }
-        return false;
     }
 
     public boolean checkLossCondition(){

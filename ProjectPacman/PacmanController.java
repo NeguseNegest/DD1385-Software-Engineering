@@ -82,12 +82,12 @@ public class PacmanController implements GameLoopListener{
             
             // Move pacman
             model.movePacman();
+            model.handleGhostPlayerCollision();
             if (model.checkWinCondition()) {
                 onGameWin();
-            } else if (model.checkGhostPlayerCollision()) {
-                if (model.checkLossCondition()){
-                    onGameLoss();
-                }
+            } else if (model.checkLossCondition()){
+                onGameLoss();
+            }
             }
             view.update();
 
@@ -96,17 +96,17 @@ public class PacmanController implements GameLoopListener{
                 model.moveGhosts();
             }
             gameTickCounter++;
+            
+            model.handleGhostPlayerCollision();
             if (model.checkWinCondition()) {
                 onGameWin();
-            } else if (model.checkGhostPlayerCollision()) {
-                if (model.checkLossCondition()){
-                    onGameLoss();
-                }
+            } else if (model.checkLossCondition()){
+                onGameLoss();
             }
             view.update();
 
         }
-    }
+    
 
     @Override
     public void onGameReset() {

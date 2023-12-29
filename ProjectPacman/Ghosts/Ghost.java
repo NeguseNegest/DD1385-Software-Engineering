@@ -115,7 +115,7 @@ public class Ghost extends Entity implements ObserverOfPlayer{
         }
     }
 
-    private void updatePath(int pacmanX, int pacmanY) {
+    private void updatePath(int targetX, int targetY) {
         // BFS
         pathRoute = new ArrayList<>();
         // pathRoute.add(0, new int[]{getX(), getY()});
@@ -145,7 +145,7 @@ public class Ghost extends Entity implements ObserverOfPlayer{
             }
             // System.out.println("loop");
 
-            if (currentX == pacmanX && currentY == pacmanY) {
+            if (currentX == targetX && currentY == targetY) {
 
 
                 
