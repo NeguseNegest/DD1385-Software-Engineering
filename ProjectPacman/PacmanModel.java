@@ -52,6 +52,7 @@ public class PacmanModel {
     }
 
     public void resetGame(){
+        this.pacmanEntity.revive();
         this.pacmanEntity.setLives(3);
         this.pacmanEntity.setDirection(0);
         this.pacmanEntity.setScore(0);
@@ -114,9 +115,7 @@ public class PacmanModel {
                     pacmanEntity.setSymbol("P");
                 }
                 break;
-        }
-
-        
+        }        
     }
     }
 
@@ -252,8 +251,9 @@ public class PacmanModel {
                 if (ghost.isPanic()){
                     ghost.SpawnAtCenter();
                 } else{
-                    pacmanEntity.setLives(pacmanEntity.getLives()-1);
-                    resetPositions();
+                    pacmanEntity.dies();
+                    // resetPositions();
+                    // pacmanEntity.setLives(pacmanEntity.getLives()-1);
                 }
             }
         }
@@ -265,7 +265,9 @@ public class PacmanModel {
         }
         return false;
     }
-
+    public int getPlayerLives(){
+        return pacmanEntity.getLives();
+    }
     public String getStatus(int i, int j) {
         for (Ghost ghost : ghostList) {
             if (ghost.getX()==i && ghost.getY()==j){

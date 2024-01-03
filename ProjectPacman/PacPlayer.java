@@ -95,4 +95,15 @@ public class PacPlayer extends Entity{
         return symbol;
     }
 
+    private boolean isDead = false;
+    public void dies(){
+        isDead = true;
+    }
+    public boolean isDead(){
+        return isDead;
+    }
+    public void revive(){
+        isDead = false;
+    }
+
 }

@@ -85,8 +85,9 @@ public class PacmanController implements GameLoopListener{
             model.handleGhostPlayerCollision();
             if (model.checkWinCondition()) {
                 onGameWin();
-            } else if (model.checkLossCondition()){
-                onGameLoss();
+            } else if (pacmanEntity.isDead()){
+                onPlayerDeath();
+                return;
             }
             }
             view.update();
@@ -100,8 +101,9 @@ public class PacmanController implements GameLoopListener{
             model.handleGhostPlayerCollision();
             if (model.checkWinCondition()) {
                 onGameWin();
-            } else if (model.checkLossCondition()){
-                onGameLoss();
+            } else if (pacmanEntity.isDead()){
+                onPlayerDeath();
+                return;
             }
             view.update();
 
@@ -111,11 +113,11 @@ public class PacmanController implements GameLoopListener{
     @Override
     public void onGameReset() {
         model.resetGame();
-        timer.restart();
-        view.requestFocusInWindow();
         view.clearMessage();
         view.displayMessage("ProjectPacman/assets/reset.png");
         view.clearMessage(1);
+        timer.restart();
+        view.requestFocusInWindow();
     }
     
     @Override
@@ -129,6 +131,31 @@ public class PacmanController implements GameLoopListener{
     public void onGameLoss() {
         timer.stop();
         view.displayMessage("ProjectPacman/assets/GameOver.png");
+    }
+
+    public void onPlayerDeath(){
+        pacmanEntity.setLives(pacmanEntity.getLives()-1);
+        if (model.checkLossCondition()){
+            onGameLoss();
+        }else{
+            timer.stop();
+            Timer deathTimer = new Timer(1500, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    pacmanEntity.revive();
+                    
+                    // System.out.println(pacmanEntity.getLives());
+                    model.resetPositions();
+                    timer.start();
+                    view.requestFocusInWindow();
+                    view.displayMessage("ProjectPacman/assets/Start.png");
+                    view.clearMessage(1);
+                }
+            });
+            deathTimer.setRepeats(false);
+            deathTimer.start();
+        }
+
     }
 
 }

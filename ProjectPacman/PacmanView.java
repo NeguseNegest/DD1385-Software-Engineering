@@ -89,7 +89,18 @@ public class PacmanView extends JPanel{
                 }
     
             }
-        }   
+        }
+        
+        g.setColor(Color.YELLOW);
+        Font font = new Font("Arial", Font.BOLD, 14);
+        g.setFont(font);
+        g.drawString("Lives", (boardWidth + 4) * cellSize, 15);
+
+        int lives = model.getPlayerLives();
+        for (int i=0; i<lives; i++){
+            g.setColor(Color.YELLOW);
+            g.fillRect((boardWidth+5)*cellSize, (i+1)*(cellSize), 10, 10);
+        }
     }
 
     public void displayMessage(String filename){
