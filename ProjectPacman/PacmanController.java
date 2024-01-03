@@ -1,11 +1,15 @@
 package ProjectPacman;
 
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 
 
 public class PacmanController implements GameLoopListener{
@@ -23,7 +27,7 @@ public class PacmanController implements GameLoopListener{
         this.pacmanEntity = pacmanEntity;
         this.view.resetButton.addActionListener(resetButtonPressed);
         this.view.addKeyListener(arrowKeyPressed); // You need a frame listen to Keys
-        timer = new Timer(80, gameLoop); // 12.5 game ticks per second
+        timer = new Timer(55, gameLoop); // 12.5 game ticks per second
         this.view.startButton.addActionListener(startButtonPressed);
         timer.start();
     }
@@ -43,6 +47,19 @@ public class PacmanController implements GameLoopListener{
             view.requestFocusInWindow();
         };
     };
+
+
+      private void playSound(String soundFileName) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFileName).getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch(Exception ex) {
+            System.out.println("Error with playing sound.");
+            ex.printStackTrace();
+        }
+    }
 
     final private ActionListener resetButtonPressed = new ActionListener(){
         @Override
@@ -123,12 +140,14 @@ public class PacmanController implements GameLoopListener{
         timer.stop();
         pacmanEntity.setScore(0);
         view.displayMessage("ProjectPacman/assets/YouWon.png");
+        playSound("ProjectPacman/assets/pacman_beginning.wav");
     }
 
     @Override
     public void onGameLoss() {
         timer.stop();
         view.displayMessage("ProjectPacman/assets/GameOver.png");
+        playSound("ProjectPacman/assets/pacman_death.wav");
     }
 
 }

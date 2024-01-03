@@ -3,6 +3,12 @@ package ProjectPacman;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
+import java.io.File;
 import java.lang.Math;
 import ProjectPacman.Ghosts.Ghost;
 
@@ -25,11 +31,15 @@ public class PacmanModel {
 
     private List<Ghost> ghostList = new ArrayList<Ghost>(); 
     private int beanAmount;
+    
 
+    private double pacmanMoveCounter = 0.5;
+    private final double PACMAN_MOVE_THRESHOLD = 1.7;
     public PacmanModel(PacPlayer pacmanEntity) {
         this.pacmanEntity = pacmanEntity;
         this.pacmanEntity.setLives(3);
         this.pacmanEntity.setDirection(0);
+        
 
         Ghost redGhost = new Ghost(this, "RedGhost");
         Ghost blueGhost = new Ghost(this, "BlueGhost");
@@ -40,7 +50,6 @@ public class PacmanModel {
         pacmanEntity.addObserver(blueGhost);
         pacmanEntity.addObserver(yellowGhost);
         pacmanEntity.addObserver(pinkGhost);
-
         ghostList.add(redGhost);
         ghostList.add(blueGhost);
         ghostList.add(yellowGhost);
@@ -49,6 +58,18 @@ public class PacmanModel {
             ghost.setDirection(0);
         }
         this.initBoard();
+    }
+
+     private void playSound(String soundFileName) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFileName).getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch(Exception ex) {
+            System.out.println("Error with playing sound.");
+            ex.printStackTrace();
+        }
     }
 
     public void resetGame(){
@@ -60,7 +81,9 @@ public class PacmanModel {
 
     public void movePacman() {
         String direction="none";
+        pacmanMoveCounter++;
         int intDirection = pacmanEntity.getDirection();
+        if (pacmanMoveCounter >= PACMAN_MOVE_THRESHOLD){
         if (intDirection != 0){
             if (intDirection == 1) {
                 direction = "RIGHT";
@@ -116,9 +139,11 @@ public class PacmanModel {
                 break;
         }
 
-        
+        pacmanMoveCounter = 0;
+
     }
     }
+}
 
     private void movePacmanTo(int newX, int newY,String pacman) {
         int x = pacmanEntity.getX();
@@ -127,11 +152,15 @@ public class PacmanModel {
         if (board[newX][newY].equals(food)) {
             foodWasEaten[newX][newY] = true;
             pacmanEntity.setScore(pacmanEntity.getScore() + 1); 
+            //playSound("ProjectPacman/assets/PacManTrim.waw.wav");
         }
     
         if (board[newX][newY].equals(powerUp)) {
             powerUpExists[newX][newY] = false;
             pacmanEntity.notifyPowerUp();
+            playSound("ProjectPacman/assets/pacman_intermission.wav");
+
+
         }
         
         pacmanEntity.setX(newX);
@@ -249,7 +278,9 @@ public class PacmanModel {
     public void handleGhostPlayerCollision(){
         for (Ghost ghost : ghostList) {
             if ((ghost.getX()==pacmanEntity.getX()) && (ghost.getY()==pacmanEntity.getY())){
+
                 if (ghost.isPanic()){
+                    playSound("ProjectPacman/assets/pacman_eatghost.wav");
                     ghost.SpawnAtCenter();
                 } else{
                     pacmanEntity.setLives(pacmanEntity.getLives()-1);
