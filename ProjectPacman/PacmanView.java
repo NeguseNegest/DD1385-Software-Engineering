@@ -100,7 +100,7 @@ public class PacmanView extends JPanel{
         g.drawString("Lives", (boardWidth + 4) * cellSize, 15);
         g.drawString("Score:", (boardWidth + 1) * cellSize, 15);
 
-    String predefinedText = String.valueOf(pacMan.getScore());; // Replace with your actual text
+    String predefinedText = String.valueOf(pacMan.getScore());; //
      g.drawString(predefinedText, (boardWidth + 1) * cellSize, 35);
         int lives = model.getPlayerLives();
         for (int i=0; i<lives; i++){
