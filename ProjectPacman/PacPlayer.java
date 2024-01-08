@@ -7,13 +7,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PacPlayer extends Entity{
-    private int score;
+    private int score=0;
     private int direction;
     private String currentDirection;
     private String symbol;
     private int lives=3;
     private List<ObserverOfPlayer> observers = new ArrayList<ObserverOfPlayer>();
     private Timer notificationCoolDown; 
+    private boolean Ate;
     public PacPlayer(){
         super();
         notificationCoolDown = new Timer(1, new ActionListener() {

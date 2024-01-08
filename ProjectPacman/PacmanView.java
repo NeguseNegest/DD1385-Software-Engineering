@@ -9,15 +9,17 @@ public class PacmanView extends JPanel{
     private PacmanModel model;
     public JButton startButton = new JButton("Start");
     public JButton resetButton= new JButton("Reset");
+    public PacPlayer pacMan;
 
     
-    private ImageIcon PacManRight,SmallFood,BigFood,RedGhost,PacManUp,PacManDown,PacManLeft, ScaredGhost, BlueGhost, YellowGhost, PinkGhost,Life;
+    private ImageIcon PacManRight,SmallFood,BigFood,RedGhost,PacManUp,PacManDown,PacManLeft, ScaredGhost, BlueGhost, YellowGhost, PinkGhost,Life, Hearts;
     private JLabel message = new JLabel("", SwingConstants.CENTER);
 
 
     
     private ClassLoader classLoader = getClass().getClassLoader();
-    public PacmanView(PacmanModel model){
+    public PacmanView(PacmanModel model,PacPlayer pacMan){
+        this.pacMan=pacMan;
 
         PacManRight = new ImageIcon(classLoader.getResource("ProjectPacman/assets/PacManRight.gif"));
         PacManUp = new ImageIcon(classLoader.getResource("ProjectPacman/assets/PacManUp.gif"));
@@ -33,6 +35,7 @@ public class PacmanView extends JPanel{
        // Life= new ImageIcon()
         
         ScaredGhost = new ImageIcon(classLoader.getResource("ProjectPacman/assets/ScaredGhost.gif"));
+        Hearts = new ImageIcon(classLoader.getResource("ProjectPacman/assets/heart.png"));
         this.model = model;
         this.setBackground(Color.BLACK);
     }
@@ -92,16 +95,29 @@ public class PacmanView extends JPanel{
         }
         
         g.setColor(Color.YELLOW);
-        Font font = new Font("Arial", Font.BOLD, 14);
+        Font font = new Font("Arial", Font.BOLD, 12);
         g.setFont(font);
         g.drawString("Lives", (boardWidth + 4) * cellSize, 15);
+        g.drawString("Score:", (boardWidth + 1) * cellSize, 15);
 
+    String predefinedText = String.valueOf(pacMan.getScore());; // Replace with your actual text
+     g.drawString(predefinedText, (boardWidth + 1) * cellSize, 35);
         int lives = model.getPlayerLives();
         for (int i=0; i<lives; i++){
             g.setColor(Color.YELLOW);
-            g.fillRect((boardWidth+5)*cellSize, (i+1)*(cellSize), 10, 10);
+            //g.fillRect((boardWidth+5)*cellSize, (i+1)*(cellSize), 10, 10);
+            Hearts.paintIcon(this, g,(boardWidth+5)*cellSize, (i+1)*(cellSize));
+           
+
+
         }
+         
+
+
+
     }
+
+
 
     public void displayMessage(String filename){
         ImageIcon image = new ImageIcon(classLoader.getResource(filename));

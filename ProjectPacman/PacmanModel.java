@@ -131,6 +131,7 @@ public class PacmanModel {
         if (board[newX][newY].equals(powerUp)) {
             powerUpExists[newX][newY] = false;
             pacmanEntity.notifyPowerUp();
+            pacmanEntity.setScore(pacmanEntity.getScore() + 5); 
         }
         
         pacmanEntity.setX(newX);
