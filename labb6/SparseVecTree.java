@@ -120,5 +120,8 @@ public class SparseVecTree<E extends Comparable<E>> extends TreeMap<Integer,E> i
         String result = builder.toString();
         return result;
     }
+    public static void main(String[] args) {
+        System.out.println();
+    }
     
 }

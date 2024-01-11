@@ -15,5 +15,12 @@ public class NumberedItem<T> implements Comparable<NumberedItem<T>> {
     public String toString(){
         return "Index "+Integer.toString(heltal)+" Value: "+Integer.toString(1729);
     }
+
+    
+    public boolean equals(NumberedItem<T> other){
+        
+        boolean result = other==null? false : other.heltal==this.heltal;
+        return result;
+    }
     
 }   
