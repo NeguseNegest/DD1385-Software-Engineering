@@ -15,28 +15,24 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 public class MyTree extends TreeFrame {
-    public final String directory;
-    private String suggestion;
+    public static String filename= "LillaLiv.txt";
     BufferedReader reader;
-    public MyTree() {
-        directory = "LillaLiv.txt";
-    }
-    public MyTree(String directory){
-        this.directory = directory;
-    }
+    
     String [] MajorBranch={"Biosfar","Rike",};
+    
+    @Override
       void initTree() {
-        root = new DefaultMutableTreeNode(directory); 
+        root = new DefaultMutableTreeNode(filename); 
         treeModel = new DefaultTreeModel(root); 
         tree = new JTree(treeModel); 
-        tree.setBackground(Color.GREEN); // Example color
+        tree.setBackground(Color.GREEN); 
         buildTree(); 
     }
 
 
     void buildTree() {
         try {
-            reader = new BufferedReader(new FileReader("labb5/LillaLiv.txt"));
+            reader = new BufferedReader(new FileReader("labb5/"+filename));
             DefaultMutableTreeNode currentNode = root;
             String line;
             while ((line = reader.readLine()) != null) {
@@ -90,10 +86,10 @@ public class MyTree extends TreeFrame {
 
 
     @Override
-void showDetails(TreePath p) {
-    if (p == null) {
-        return; 
-    }
+    void showDetails(TreePath p) {
+        if (p == null) {
+            return; 
+            }
 
     DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) p.getLastPathComponent();
 
@@ -108,7 +104,11 @@ void showDetails(TreePath p) {
 }
 
     
-    public static void main(String[] u) {
+    public static void main(String[] args) {
+        if (args.length > 0) {
+            filename = args[0];
+            }
+        MyTree.filename = "TinyLife.txt";
         MyTree treeApp = new MyTree();
         treeApp.setVisible(true);
     }
