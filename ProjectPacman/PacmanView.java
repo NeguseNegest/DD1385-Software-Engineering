@@ -9,7 +9,6 @@ public class PacmanView extends JPanel{
     private PacmanModel model;
     public JButton startButton = new JButton("Start");
     public JButton resetButton= new JButton("Reset");
-    public PacPlayer pacMan;
 
     
     private ImageIcon PacManRight,SmallFood,BigFood,RedGhost,PacManUp,PacManDown,PacManLeft, ScaredGhost, BlueGhost, YellowGhost, PinkGhost,Life, Hearts;
@@ -18,8 +17,7 @@ public class PacmanView extends JPanel{
 
     
     private ClassLoader classLoader = getClass().getClassLoader();
-    public PacmanView(PacmanModel model,PacPlayer pacMan){
-        this.pacMan=pacMan;
+    public PacmanView(PacmanModel model){
 
         PacManRight = new ImageIcon(classLoader.getResource("ProjectPacman/assets/PacManRight.gif"));
         PacManUp = new ImageIcon(classLoader.getResource("ProjectPacman/assets/PacManUp.gif"));
@@ -100,16 +98,13 @@ public class PacmanView extends JPanel{
         g.drawString("Lives", (boardWidth + 4) * cellSize, 15);
         g.drawString("Score:", (boardWidth + 1) * cellSize, 15);
 
-    String predefinedText = String.valueOf(pacMan.getScore());; //
+    String predefinedText = String.valueOf(pacMan.getScore());; // Replace with your actual text
      g.drawString(predefinedText, (boardWidth + 1) * cellSize, 35);
         int lives = model.getPlayerLives();
         for (int i=0; i<lives; i++){
             g.setColor(Color.YELLOW);
             //g.fillRect((boardWidth+5)*cellSize, (i+1)*(cellSize), 10, 10);
             Hearts.paintIcon(this, g,(boardWidth+5)*cellSize, (i+1)*(cellSize));
-           
-
-
         }
          
 
@@ -174,5 +169,3 @@ public class PacmanView extends JPanel{
         frame.add(this);
         frame.setVisible(true);
     }
-    
-}
