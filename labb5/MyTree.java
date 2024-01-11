@@ -15,8 +15,15 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 public class MyTree extends TreeFrame {
-    public final String directory="Lillaliv.txt";
+    public final String directory;
+    private String suggestion;
     BufferedReader reader;
+    public MyTree() {
+        directory = "LillaLiv.txt";
+    }
+    public MyTree(String directory){
+        this.directory = directory;
+    }
     String [] MajorBranch={"Biosfar","Rike",};
       void initTree() {
         root = new DefaultMutableTreeNode(directory); 
@@ -102,7 +109,6 @@ void showDetails(TreePath p) {
 
     
     public static void main(String[] u) {
-        // Create and display the tree
         MyTree treeApp = new MyTree();
         treeApp.setVisible(true);
     }
