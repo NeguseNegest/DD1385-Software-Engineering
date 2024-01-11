@@ -16,21 +16,26 @@ import javax.sound.sampled.*;
 public class PacmanController implements GameLoopListener{
     private PacmanModel model;
     private PacmanView view;
+    private PacmanSound sound;
     private PacPlayer pacmanEntity;
 
     private int gameTickCounter;
     private Timer timer;
     
-    public PacmanController(PacmanModel model, PacmanView view, PacPlayer pacmanEntity){
+    public PacmanController(PacmanModel model, PacmanView view, PacPlayer pacmanEntity,PacmanSound sound){
         gameTickCounter = 0;
         this.model = model;
         this.view = view;
+        this.sound = sound;
         this.pacmanEntity = pacmanEntity;
-        this.view.resetButton.addActionListener(resetButtonPressed);
+
         this.view.addKeyListener(arrowKeyPressed); // You need a frame listen to Keys
-        timer = new Timer(80, gameLoop); // 12.5 game ticks per second
+        this.view.resetButton.addActionListener(resetButtonPressed);
         this.view.startButton.addActionListener(startButtonPressed);
+        
+        timer = new Timer(80, gameLoop); // 12.5 game ticks per second
         timer.start();
+        sound.startBackgroundMusic();
     }
     
 
@@ -56,46 +61,6 @@ public class PacmanController implements GameLoopListener{
         }
     };
 
-
-    // sound 
-    private void playSound(String soundFileName) {
-        try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFileName).getAbsoluteFile());
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
-        } catch(Exception ex) {
-            System.out.println("Error with playing sound.");
-            ex.printStackTrace();
-        }
-    }
-    
-
-
-    private Clip backgroundMusicClip;
-
-    private void startBackgroundMusic() {
-        try {
-            if (backgroundMusicClip != null && backgroundMusicClip.isRunning()) {
-                backgroundMusicClip.stop(); // Stop if already playing
-            }
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(
-                new File("ProjectPacman/assets/NewBackMusic.wav").getAbsoluteFile());
-            backgroundMusicClip = AudioSystem.getClip();
-            backgroundMusicClip.open(audioInputStream);
-            backgroundMusicClip.loop(Clip.LOOP_CONTINUOUSLY); // Loop continuously
-            backgroundMusicClip.start();
-        } catch(Exception ex) {
-            System.out.println("Error with playing background music.");
-            ex.printStackTrace();
-        }
-    }
-
-    private void stopBackgroundMusic() {
-        if (backgroundMusicClip != null) {
-            backgroundMusicClip.stop();
-        }
-    }
 
 
     final private KeyListener arrowKeyPressed = new KeyListener(){
@@ -126,17 +91,24 @@ public class PacmanController implements GameLoopListener{
     @Override
     public void onGameTick() {
         if (!model.checkLossCondition()) {  
-            //playSound("ProjectPacman/assets/Slower-Tempo-2020-03-22_-_8_Bit_Surf_-_FesliyanStudios.com_-_David_Renda.mp3");           
+            // sound.playSound("ProjectPacman/assets/Slower-Tempo-2020-03-22_-_8_Bit_Surf_-_FesliyanStudios.com_-_David_Renda.mp3");           
             
             // Move pacman
-            model.movePacman();
+            int beforeScore = pacmanEntity.getScore(); 
+            model.movePacman(); 
+            int afterScore = pacmanEntity.getScore();
+            if (afterScore>beforeScore){
+                // play eating sound
+                sound.playSound("ProjectPacman/assets/pacman_chomp.wav");
+            }
+            
             model.handleGhostPlayerCollision();
             if (model.checkWinCondition()) {
                 onGameWin();
-                playSound("ProjectPacman/assets/pacman_intermission.wav");
+                sound.playSound("ProjectPacman/assets/pacman_intermission.wav");
             } else if (pacmanEntity.isDead()){
                 onPlayerDeath();
-                playSound("ProjectPacman/assets/pacman_death.wav");
+                sound.playSound("ProjectPacman/assets/pacman_death.wav");
                 return;
             }
             }
@@ -153,7 +125,7 @@ public class PacmanController implements GameLoopListener{
                 onGameWin();
             } else if (pacmanEntity.isDead()){
                 onPlayerDeath();
-                playSound("ProjectPacman/assets/pacman_death.wav");
+                sound.playSound("ProjectPacman/assets/pacman_death.wav");
                 return;
             }
             view.update();
@@ -169,7 +141,7 @@ public class PacmanController implements GameLoopListener{
         view.clearMessage(1);
         timer.restart();
         view.requestFocusInWindow();
-        startBackgroundMusic();
+        sound.startBackgroundMusic();
     }
     
     @Override
@@ -177,7 +149,7 @@ public class PacmanController implements GameLoopListener{
         timer.stop();
         pacmanEntity.setScore(0);
         view.displayMessage("ProjectPacman/assets/YouWon.png");
-        stopBackgroundMusic(); 
+        sound.stopBackgroundMusic(); 
 
     }
 
@@ -185,7 +157,7 @@ public class PacmanController implements GameLoopListener{
     public void onGameLoss() {
         timer.stop();
         view.displayMessage("ProjectPacman/assets/GameOver.png");
-        stopBackgroundMusic(); 
+        sound.stopBackgroundMusic(); 
     }
 
     
@@ -200,8 +172,6 @@ public class PacmanController implements GameLoopListener{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     pacmanEntity.revive();
-                    
-                    // System.out.println(pacmanEntity.getLives());
                     model.resetPositions();
                     timer.start();
                     view.requestFocusInWindow();
