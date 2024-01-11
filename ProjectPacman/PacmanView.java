@@ -98,7 +98,7 @@ public class PacmanView extends JPanel{
         g.drawString("Lives", (boardWidth + 4) * cellSize, 15);
         g.drawString("Score:", (boardWidth + 1) * cellSize, 15);
 
-    String predefinedText = String.valueOf(pacMan.getScore());; // Replace with your actual text
+    String predefinedText = String.valueOf(model.getModelScore());; // Replace with your actual text
      g.drawString(predefinedText, (boardWidth + 1) * cellSize, 35);
         int lives = model.getPlayerLives();
         for (int i=0; i<lives; i++){
@@ -160,7 +160,7 @@ public class PacmanView extends JPanel{
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         buttonPanel.add(Box.createVerticalStrut(10));
         buttonPanel.add(resetButton);
-        buttonPanel.add(startButton);
+        // buttonPanel.add(startButton);
         add(buttonPanel, BorderLayout.EAST);
     
         // Add message label to the center
@@ -169,3 +169,4 @@ public class PacmanView extends JPanel{
         frame.add(this);
         frame.setVisible(true);
     }
+}

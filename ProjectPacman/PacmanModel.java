@@ -210,8 +210,12 @@ public class PacmanModel {
     }
 
     public boolean wallCollision(int x, int y, String direction) {
-        // Check if the next move is valid based on the direction input
-        if (direction.equals("UP") && !board[x - 1][y].equals(interiorWall) ) {
+        if (x==14 && y==27 && direction.equals("RIGHT")){
+            return true;
+        }else if (x==14 && y==0 && direction.equals("LEFT")){
+            return true;
+        }
+        else if (direction.equals("UP") && !board[x - 1][y].equals(interiorWall) ) {
             return false;
         } else if (direction.equals("DOWN") && !board[x + 1][y].equals(interiorWall) && !board[x + 1][y].equals(door)) {
             return false;
@@ -233,7 +237,9 @@ public class PacmanModel {
             ghost.setDirection(0);
         }
     }
-    
+    public int getModelScore(){
+        return pacmanEntity.getScore();
+    }
     public boolean checkWinCondition(){
         for (int i = 0; i < boardHeight; i++) {
             for (int j = 0; j < boardWidth; j++) {

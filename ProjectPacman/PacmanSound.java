@@ -13,21 +13,21 @@ public class PacmanSound {
 
  
     public void playSound(String soundFileName) {
-        // try {
-        //     // If a sound is currently playing, wait for it to finish
-        //     if (currentClip != null && currentClip.isRunning()) {
-        //         currentClip.drain(); // Wait for the clip to finish playing
-        //     }
+        try {
+            // If a sound is currently playing, wait for it to finish
+            if (currentClip != null && currentClip.isRunning()) {
+                currentClip.drain(); // Wait for the clip to finish playing
+            }
 
-        //     // Load and play the new sound
-        //     AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFileName).getAbsoluteFile());
-        //     currentClip = AudioSystem.getClip();
-        //     currentClip.open(audioInputStream);
-        //     currentClip.start();
-        // } catch(Exception ex) {
-        //     System.out.println("Error with playing sound.");
-        //     ex.printStackTrace();
-        // }
+            // Load and play the new sound
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFileName).getAbsoluteFile());
+            currentClip = AudioSystem.getClip();
+            currentClip.open(audioInputStream);
+            currentClip.start();
+        } catch(Exception ex) {
+            System.out.println("Error with playing sound.");
+            ex.printStackTrace();
+        }
     }
     
 
