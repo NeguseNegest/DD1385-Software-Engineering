@@ -43,6 +43,8 @@ public class Ghost extends Entity implements ObserverOfPlayer{
     public void SpawnAtCenter(){
         setX(cX);
         setY(cY);
+        panicMode = false;
+        setSymbol(defaultSymbol);
     }
 
     public void SpawnAtCenter(int seconds){
