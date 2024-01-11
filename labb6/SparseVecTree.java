@@ -29,7 +29,7 @@ public class SparseVecTree<E extends Comparable<E>> extends TreeMap<Integer,E> i
 
     @Override
     public E get(int pos) {
-        E itemAtPos = this.get(pos);
+        E itemAtPos = super.get(pos);
         return itemAtPos;
     }
 
@@ -79,10 +79,10 @@ public class SparseVecTree<E extends Comparable<E>> extends TreeMap<Integer,E> i
         this.remove(indexOfElem);
     }
 
-    @Override
-    public int size() {
-        return this.size();
-    }
+    // @Override
+    // public int size() {
+    //     return size();
+    // }
 
     @Override
     public List<E> sortedValues() {
@@ -120,8 +120,31 @@ public class SparseVecTree<E extends Comparable<E>> extends TreeMap<Integer,E> i
         String result = builder.toString();
         return result;
     }
+    // I SparseVec-implementationens main-metod, skapa en vektor, 
+    // lägg in minst fem värden och testa toString(), toArray() och sortedValues() 
+    // genom att anropa dem och skriva ut resultaten. 
+    // Använd alltså inte JUnit och assert för dessa tester.  
+
     public static void main(String[] args) {
-        System.out.println();
+        SparseVec<Integer> myVec = new MySparseVec<>();
+        myVec.add(1);
+        myVec.add(1,7);
+        myVec.add(2,2);
+        myVec.add(3,9);
+        myVec.add(7, 9);
+
+        System.out.println("\n String representation of myVec");
+        System.out.println(myVec.toString());
+        
+        System.out.println("\n Array representation of myVec");
+        Object[] obj = myVec.toArray();
+        for (int i =0; i<obj.length;i++) {
+            System.out.println(obj[i]);
+        }
+
+        System.out.println("\n Sorted values");
+
+        System.out.println(myVec.sortedValues());
     }
     
 }

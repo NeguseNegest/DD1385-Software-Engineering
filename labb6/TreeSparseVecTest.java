@@ -4,13 +4,13 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import java.util.List;
 
-public class SparseVecTest {
+public class TreeSparseVecTest {
 
     //För en tom SparseVec, testa size(), minIndex(), maxIndex() som ju alla ska ge heltalsvärden. 
     // Testa get(k), där k är ett godtyckligt int-värde. Anropa toArray() och sortedValues() på tom vektor och gör lämpliga tester på resultaten. 
     @Test
     public void testEmpty() {
-        SparseVec<Integer> vec = new MySparseVec<>();
+        SparseVec<Integer> vec = new SparseVecTree<>();
         
         assertEquals(0, vec.size());
         assertEquals(-1, vec.minIndex());
@@ -27,7 +27,7 @@ public class SparseVecTest {
 
     @Test
     public void testIndex() {
-        SparseVec<String> vec = new MySparseVec<>();
+        SparseVec<String> vec = new SparseVecTree<>();
         vec.add("pizza");
         vec.add("gabagool");
         vec.add("mozarella");
@@ -43,7 +43,7 @@ public class SparseVecTest {
 // Kom ihåg att testa get() med ett index som inte används. Den ska gå ge null.
     @Test
     public void testInsertAtPosition() {
-        SparseVec<Integer> vec = new MySparseVec<>();
+        SparseVec<Integer> vec = new SparseVecTree<>();
         
         vec.add(0, 1);
         assertEquals(1, vec.size());
@@ -65,7 +65,7 @@ public class SparseVecTest {
 
     @Test
     public void testAddAtUnspecifiedPosition() {
-        SparseVec<String> vec = new MySparseVec<>();
+        SparseVec<String> vec = new SparseVecTree<>();
         
         vec.add("pizza");
         vec.add("mama");
@@ -80,7 +80,7 @@ public class SparseVecTest {
 
     @Test
     public void testRemove() {
-        SparseVec<String> vec = new MySparseVec<>();
+        SparseVec<String> vec = new SparseVecTree<>();
         vec.add("pizza");
         vec.add("mama");
         vec.add("mia");
