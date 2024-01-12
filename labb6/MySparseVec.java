@@ -14,7 +14,7 @@ public class MySparseVec<E extends Comparable<E>> implements SparseVec<E>{
     public void add(E elem) {
         Integer minIndexBeingUsed = minIndex();
         Integer maxIndexBeingUsed = maxIndex();
-        if (minIndexBeingUsed==-1){
+        if (minIndexBeingUsed<=-1){
             fooMap.put(0,elem);
             return;
         }
@@ -28,6 +28,10 @@ public class MySparseVec<E extends Comparable<E>> implements SparseVec<E>{
 
     @Override
     public void add(int pos, E elem) {
+        if (pos<=-1){
+            fooMap.put(0,elem);
+            return;
+        }
         fooMap.put(pos,elem);
     }
 
@@ -132,24 +136,27 @@ public class MySparseVec<E extends Comparable<E>> implements SparseVec<E>{
 
     public static void main(String[] args) {
         SparseVec<Integer> myVec = new MySparseVec<>();
-        myVec.add(1);
-        myVec.add(1,7);
-        myVec.add(2,2);
-        myVec.add(3,9);
-        myVec.add(7, 9);
 
-        System.out.println("\n String representation of myVec");
-        System.out.println(myVec.toString());
+        // myVec.add(1);
+        myVec.add(-5,7);
+        // myVec.add(2,2);
+        // myVec.add(3,9);
+        // myVec.add(7, 9);
+
+        // System.out.println("\n String representation of myVec");
+        // System.out.println(myVec.toString());
         
-        System.out.println("\n Array representation of myVec");
-        Object[] obj = myVec.toArray();
-        for (int i =0; i<obj.length;i++) {
-            System.out.println(obj[i]);
-        }
+        // System.out.println("\n Array representation of myVec");
+        // Object[] obj = myVec.toArray();
+        // for (int i =0; i<obj.length;i++) {
+        //     System.out.println(obj[i]);
+        // }
 
-        System.out.println("\n Sorted values");
+        // System.out.println("\n Sorted values");
 
-        System.out.println(myVec.sortedValues());
+        // System.out.println(myVec.sortedValues());
+
+        System.out.println(myVec.get(-5));
     }
     
 }

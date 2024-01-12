@@ -94,13 +94,8 @@ public class PacmanController implements GameLoopListener{
             // sound.playSound("ProjectPacman/assets/Slower-Tempo-2020-03-22_-_8_Bit_Surf_-_FesliyanStudios.com_-_David_Renda.mp3");           
             
             // Move pacman
-            int beforeScore = pacmanEntity.getScore(); 
             model.movePacman(); 
-            int afterScore = pacmanEntity.getScore();
-            if (afterScore>beforeScore){
-                // play eating sound
-                // sound.playSound("ProjectPacman/assets/pacman_chomp.wav");
-            }
+
             
             model.handleGhostPlayerCollision();
             if (model.checkWinCondition()) {
