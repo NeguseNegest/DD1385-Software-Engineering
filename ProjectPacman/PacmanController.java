@@ -99,13 +99,14 @@ public class PacmanController implements GameLoopListener{
             int afterScore = pacmanEntity.getScore();
             if (afterScore>beforeScore){
                 // play eating sound
-                sound.playSound("ProjectPacman/assets/pacman_chomp.wav");
+                // sound.playSound("ProjectPacman/assets/pacman_chomp.wav");
             }
             
             model.handleGhostPlayerCollision();
             if (model.checkWinCondition()) {
                 onGameWin();
-                sound.playSound("ProjectPacman/assets/pacman_intermission.wav");
+                // sound.playSound("ProjectPacman/assets/pacman_intermission.wav");
+                sound.playSound("ProjectPacman/assets/success_bell-6776.wav");
             } else if (pacmanEntity.isDead()){
                 onPlayerDeath();
                 sound.playSound("ProjectPacman/assets/pacman_death.wav");

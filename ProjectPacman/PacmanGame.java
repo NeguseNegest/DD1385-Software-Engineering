@@ -8,7 +8,7 @@ public class PacmanGame {
         PacmanModel model = new PacmanModel(player);
         PacmanView view = new PacmanView(model);
         PacmanSound sound= new PacmanSound();
-        PacmanController controller = new PacmanController(model, view, player,sound);
+        new PacmanController(model, view, player,sound);
         view.initGUI();
         // PacmanGame game = new PacmanGame();
         // game.showGame();

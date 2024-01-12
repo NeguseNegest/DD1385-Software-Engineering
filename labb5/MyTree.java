@@ -36,7 +36,7 @@ public class MyTree extends TreeFrame {
             DefaultMutableTreeNode currentNode = root;
             String line;
             while ((line = reader.readLine()) != null) {
-                currentNode = buildTreeRecursive(line.trim(), currentNode);
+                currentNode = makeNextNode(line.trim(), currentNode);
             }
             reader.close();
         } catch (IOException e) {
@@ -44,7 +44,7 @@ public class MyTree extends TreeFrame {
         }
     }
 
-    private DefaultMutableTreeNode buildTreeRecursive(String line, DefaultMutableTreeNode parentNode) {
+    private DefaultMutableTreeNode makeNextNode(String line, DefaultMutableTreeNode parentNode) {
         if (line.isEmpty()) {
             return parentNode;
         }
@@ -105,11 +105,10 @@ public class MyTree extends TreeFrame {
 
     
     public static void main(String[] args) {
+        MyTree.filename = "LillaLiv.txt";
         if (args.length > 0) {
             filename = args[0];
             }
-        MyTree.filename = "TinyLife.txt";
-        MyTree treeApp = new MyTree();
-        treeApp.setVisible(true);
+        new MyTree();
     }
 }
