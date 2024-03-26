@@ -182,15 +182,7 @@ public class Ghost extends Entity implements ObserverOfPlayer{
                     nodes.add(new Node(currentX + 1, currentY, currentNode));
                 }
             }
-        }
-
-        // Node findingNode = nodes.pop();
-        // while (findingNode != null) {
-        //     int[] nextCoordinate = new int[]{findingNode.x, findingNode.y};
-        //     pathRoute.add(0, nextCoordinate);
-        //     findingNode = findingNode.parent;
-        // }
-        
+        }        
     }
 
     public int getNextMoveDirection(){
