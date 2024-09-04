@@ -1,6 +1,5 @@
 package ProjectPacman;
 
-
 public interface GameLoopListener {
     void onGameTick();
 

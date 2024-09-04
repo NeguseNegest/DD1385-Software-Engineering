@@ -6,16 +6,17 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PacPlayer extends Entity{
-    private int score=0;
+public class PacPlayer extends Entity {
+    private int score = 0;
     private int direction;
     private String currentDirection;
     private String symbol;
-    private int lives=3;
+    private int lives = 3;
     private List<ObserverOfPlayer> observers = new ArrayList<ObserverOfPlayer>();
-    private Timer notificationCoolDown; 
+    private Timer notificationCoolDown;
     private boolean Ate;
-    public PacPlayer(){
+
+    public PacPlayer() {
         super();
         notificationCoolDown = new Timer(1, new ActionListener() {
             @Override
@@ -25,85 +26,89 @@ public class PacPlayer extends Entity{
         });
     }
 
-    public void addObserver(ObserverOfPlayer observer){
+    public void addObserver(ObserverOfPlayer observer) {
         this.observers.add(observer);
     }
-    public void notifyPosition(){
-        if (!notificationCoolDown.isRunning()){
+
+    public void notifyPosition() {
+        if (!notificationCoolDown.isRunning()) {
             notificationCoolDown.start();
         }
         for (ObserverOfPlayer observer : observers) {
-            observer.playerPositionChanged(x,y);
+            observer.playerPositionChanged(x, y);
         }
     }
 
-    public void notifyPowerUp(){
+    public void notifyPowerUp() {
         for (ObserverOfPlayer observer : observers) {
             observer.playerPoweredUp();
         }
     }
-    
-    @Override
-	public void setX(int x) {
-		this.x = x;
-	}
 
     @Override
-	public void setY(int y) {
-		this.y = y;
-	}
-    
+    public void setX(int x) {
+        this.x = x;
+    }
 
-    
-    public void setScore(int score){
-        this.score=score;
+    @Override
+    public void setY(int y) {
+        this.y = y;
+    }
 
+    public void setScore(int score) {
+        this.score = score;
 
     }
 
-    public int getScore(){
+    public int getScore() {
 
         return this.score;
     }
 
-    public void setLives(int lives){
-        this.lives=lives;
+    public void setLives(int lives) {
+        this.lives = lives;
     }
 
-    public int getLives(){
+    public int getLives() {
         return this.lives;
     }
 
-    public void setDirection(int direction){
+    public void setDirection(int direction) {
         this.direction = direction;
     }
-    public int getDirection(){
+
+    public int getDirection() {
         return direction;
     }
 
-    public void setCurrentDirection(String currentDirection){
+    public void setCurrentDirection(String currentDirection) {
         this.currentDirection = currentDirection;
     }
-    public String getCurrentDirection(){
-        return (currentDirection != null) ? currentDirection : new String[]{"none","RIGHT", "UP","LEFT","DOWN"}[getDirection()];
+
+    public String getCurrentDirection() {
+        return (currentDirection != null) ? currentDirection
+                : new String[] { "none", "RIGHT", "UP", "LEFT", "DOWN" }[getDirection()];
     }
 
-    public void setSymbol(String symbol){
+    public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
 
-    public String getSymbol(){
+    public String getSymbol() {
         return symbol;
     }
 
     private boolean isDead = false;
-    public void dies(){
+
+    public void dies() {
         isDead = true;
     }
-    public boolean isDead(){
+
+    public boolean isDead() {
         return isDead;
     }
-    public void revive(){
+
+    public void revive() {
         isDead = false;
     }
 
