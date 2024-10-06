@@ -7,17 +7,5 @@
 
 `PacmanView` This class handles the displaying the GUI and graphics.
 
-### How to run
-
-
-1. install gradle
-
-
-2. clone the repo and `cd pacman-java`
-
-
-2. `gradle build` 
-
-
-3. `gradle run`
-
+### How to install and run
+download and run `Pacman-javax.jar`
